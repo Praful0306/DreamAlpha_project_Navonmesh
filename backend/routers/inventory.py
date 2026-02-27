@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from models import BatchCreate, BatchResponse, ChamberResponse
+from models import BatchCreate, BatchResponse, ChamberResponse, ChamberCreate
 from database import get_connection
 from datetime import date, datetime
 
@@ -131,3 +131,18 @@ async def add_batch(batch: BatchCreate):
     conn.commit()
     conn.close()
     return {"status": "ok", "message": f"Batch #{bid} added", "batch_id": bid}
+
+
+@router.post("/chambers")
+async def add_chamber(chamber: ChamberCreate):
+    """Add a new chamber to the system."""
+    conn = get_connection()
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO chambers (name, location, crop_stored, capacity_tonnes) VALUES (?,?,?,?)",
+        (chamber.name, chamber.location, chamber.crop_stored, chamber.capacity_tonnes)
+    )
+    cid = cur.lastrowid
+    conn.commit()
+    conn.close()
+    return {"status": "ok", "message": f"Chamber '{chamber.name}' added", "chamber_id": cid}

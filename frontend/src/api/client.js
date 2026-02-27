@@ -10,6 +10,7 @@ const API = axios.create({
 })
 
 export const getChambers = () => API.get('/api/chambers')
+export const addChamber = (data) => API.post('/api/chambers', data)
 export const getInventory = () => API.get('/api/inventory')
 export const addBatch = (data) => API.post('/api/inventory/batch', data)
 export const getAlerts = () => API.get('/api/alerts')

@@ -26,6 +26,13 @@ class SensorReadingResponse(BaseModel):
 
 # ── Chamber ───────────────────────────────────────────────────────────────
 
+class ChamberCreate(BaseModel):
+    name:             str
+    location:         str
+    crop_stored:      str
+    capacity_tonnes:  float
+
+
 class ChamberResponse(BaseModel):
     id:               int
     name:             str

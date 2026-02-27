@@ -2,19 +2,33 @@ import { useState, useEffect, useCallback } from 'react'
 import ChamberCard from '../components/ChamberCard'
 import SensorChart from '../components/SensorChart'
 import { ErrorBanner, LoadingSkeleton } from '../components/UXStates'
-import { getChambers, simulateSensor } from '../api/client'
+import { getChambers, simulateSensor, getAlertStats, getInventory, addChamber } from '../api/client'
 
 export default function Dashboard() {
     const [chambers, setChambers] = useState([])
+    const [alertStats, setAlertStats] = useState({ total_unresolved: 0, critical_count: 0 })
+    const [inventoryQty, setInventoryQty] = useState(0)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [simulating, setSimulating] = useState(false)
     const [lastUpdate, setLastUpdate] = useState(null)
 
-    const fetchChambers = useCallback(async () => {
+    // Add Chamber Modal State
+    const [showAddModal, setShowAddModal] = useState(false)
+    const [chamberForm, setChamberForm] = useState({ name: '', location: '', crop_stored: 'Tomatoes', capacity_tonnes: '' })
+    const [submitting, setSubmitting] = useState(false)
+
+    const fetchData = useCallback(async () => {
         try {
-            const res = await getChambers()
-            setChambers(res.data)
+            const [chRes, alRes, invRes] = await Promise.all([
+                getChambers(),
+                getAlertStats(),
+                getInventory()
+            ])
+            setChambers(chRes.data)
+            setAlertStats(alRes.data)
+            const totalKg = invRes.data.reduce((sum, b) => sum + (b.quantity_kg || 0), 0)
+            setInventoryQty(totalKg)
             setError(null)
             setLastUpdate(new Date().toLocaleTimeString())
         } catch {
@@ -25,23 +39,45 @@ export default function Dashboard() {
     }, [])
 
     useEffect(() => {
-        fetchChambers()
-        const timer = setInterval(fetchChambers, 10000)
+        fetchData()
+        const timer = setInterval(fetchData, 10000)
         return () => clearInterval(timer)
-    }, [fetchChambers])
+    }, [fetchData])
 
     const handleSimulate = async () => {
         setSimulating(true)
         try {
             await simulateSensor()
-            setTimeout(fetchChambers, 800)
+            setTimeout(fetchData, 800)
         } catch { setError('Backend not connected') }
         setSimulating(false)
+    }
+
+    const handleCreateChamber = async (e) => {
+        e.preventDefault()
+        setSubmitting(true)
+        try {
+            await addChamber({
+                name: chamberForm.name,
+                location: chamberForm.location,
+                crop_stored: chamberForm.crop_stored,
+                capacity_tonnes: parseFloat(chamberForm.capacity_tonnes)
+            })
+            setShowAddModal(false)
+            setChamberForm({ name: '', location: '', crop_stored: 'Tomatoes', capacity_tonnes: '' })
+            fetchData()
+        } catch (err) {
+            setError('Failed to create chamber')
+        } finally {
+            setSubmitting(false)
+        }
     }
 
     const activeCount = chambers.length
     const avgTemp = (chambers.reduce((acc, c) => acc + (c.latest_temp || 0), 0) / (activeCount || 1)).toFixed(1)
     const avgHum = (chambers.reduce((acc, c) => acc + (c.latest_humidity || 0), 0) / (activeCount || 1)).toFixed(0)
+    const powerUsage = (activeCount * 1.8).toFixed(1)
+
 
     return (
         <div className="flex-1 overflow-y-auto relative z-10">
@@ -68,7 +104,7 @@ export default function Dashboard() {
                             <span className="material-symbols-outlined text-[20px]">download</span>
                             Export Log
                         </button>
-                        <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/20 transition-all text-sm font-medium">
+                        <button onClick={() => setShowAddModal(true)} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/20 transition-all text-sm font-medium">
                             <span className="material-symbols-outlined text-[20px]">add</span>
                             New Chamber
                         </button>
@@ -76,7 +112,7 @@ export default function Dashboard() {
                 </div>
 
                 {error && (
-                    <ErrorBanner message={error} onRetry={fetchChambers} />
+                    <ErrorBanner message={error} onRetry={fetchData} />
                 )}
 
                 {/* Stats Grid */}
@@ -122,43 +158,44 @@ export default function Dashboard() {
                         </p>
                     </div>
 
-                    {/* Stat Card 3 */}
+                    {/* Stat Card 3: Storage */}
                     <div className="bg-white/50 dark:bg-surface-glass backdrop-blur-[20px] rounded-xl p-5 border border-slate-200 dark:border-surface-border shadow-sm relative overflow-hidden group">
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Relative Humidity</p>
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{loading ? '--' : avgHum}%</h3>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Total Inventory</p>
+                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{loading ? '--' : (inventoryQty / 1000).toFixed(1)} <span className="text-slate-500 text-sm font-normal">Tons</span></h3>
                             </div>
                             <div className="p-2 rounded-lg bg-blue-100 dark:bg-white/5 text-blue-500 dark:text-blue-400">
-                                <span className="material-symbols-outlined">water_drop</span>
+                                <span className="material-symbols-outlined">inventory_2</span>
                             </div>
                         </div>
-                        <svg className="w-full h-8 stroke-blue-500/50 dark:stroke-blue-400/50 fill-none" preserveAspectRatio="none" viewBox="0 0 100 20">
-                            <path d="M0 12 Q 10 15, 20 12 T 40 10 T 60 8 T 80 12 T 100 10" strokeWidth="2"></path>
-                        </svg>
-                        <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[14px]">check_circle</span>
-                            Optimal Range
+                        <div className="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+                            <div className="bg-blue-500 h-full w-3/4 rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-3 flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[14px]">info</span>
+                            75% Warehouse full
                         </p>
                     </div>
 
-                    {/* Stat Card 4 */}
-                    <div className="bg-white/50 dark:bg-surface-glass backdrop-blur-[20px] rounded-xl p-5 border border-slate-200 dark:border-surface-border shadow-sm relative overflow-hidden group">
+                    {/* Stat Card 4: Alerts */}
+                    <div className="bg-white/50 dark:bg-surface-glass backdrop-blur-[20px] rounded-xl p-5 border border-rose-200 dark:border-rose-900/30 shadow-sm relative overflow-hidden group">
+                        <div className="absolute -right-6 -bottom-6 bg-rose-500/10 w-24 h-24 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
                         <div className="flex justify-between items-start mb-4">
                             <div>
-                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Power Usage</p>
-                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">4.2 kW</h3>
+                                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Alerts</p>
+                                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-1">{loading ? '--' : alertStats.total_unresolved}</h3>
                             </div>
-                            <div className="p-2 rounded-lg bg-purple-100 dark:bg-white/5 text-purple-500 dark:text-purple-400">
-                                <span className="material-symbols-outlined">bolt</span>
+                            <div className="p-2 rounded-lg bg-rose-100 dark:bg-rose-500/10 text-rose-500 dark:text-rose-400">
+                                <span className="material-symbols-outlined">notification_important</span>
                             </div>
                         </div>
-                        <svg className="w-full h-8 stroke-purple-500/50 dark:stroke-purple-400/50 fill-none" preserveAspectRatio="none" viewBox="0 0 100 20">
-                            <path d="M0 18 Q 20 15, 40 12 T 60 14 T 80 8 T 100 5" strokeWidth="2"></path>
-                        </svg>
-                        <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[14px]">trending_down</span>
-                            -12% vs last week
+                        <div className="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full overflow-hidden">
+                            <div className="bg-rose-500 h-full w-full rounded-full"></div>
+                        </div>
+                        <p className="text-xs text-rose-600 dark:text-rose-400 mt-3 flex items-center gap-1 font-semibold tracking-wide">
+                            <span className="material-symbols-outlined text-[14px]">warning</span>
+                            {alertStats.critical_count} CRITICAL ISSUES
                         </p>
                     </div>
                 </div>
@@ -183,7 +220,7 @@ export default function Dashboard() {
                     )}
 
                     {/* Add New Placeholder */}
-                    <button className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-transparent flex flex-col items-center justify-center p-8 text-slate-500 hover:text-primary hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all group h-full min-h-[240px]">
+                    <button onClick={() => setShowAddModal(true)} className="rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-transparent flex flex-col items-center justify-center p-8 text-slate-500 hover:text-primary hover:border-primary/50 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-all group h-full min-h-[240px]">
                         <div className="size-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3 group-hover:bg-primary/20 group-hover:scale-110 transition-all">
                             <span className="material-symbols-outlined text-[24px]">add</span>
                         </div>
@@ -244,6 +281,55 @@ export default function Dashboard() {
                     </div>
                 </div>
             </div>
+            {/* Add Chamber Modal */}
+            {showAddModal && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-fade-in">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 w-full max-w-md rounded-2xl shadow-xl overflow-hidden animate-slide-up">
+                        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                            <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">sensors</span>
+                                Connect Chamber
+                            </h3>
+                            <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-white transition-colors">
+                                <span className="material-symbols-outlined text-[20px]">close</span>
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleCreateChamber} className="p-6">
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Chamber Target Name</label>
+                                    <input required type="text" placeholder="e.g. Chamber D" value={chamberForm.name} onChange={e => setChamberForm({ ...chamberForm, name: e.target.value })} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-900 dark:text-white" />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Location/Wing</label>
+                                        <input required type="text" placeholder="e.g. West Wing" value={chamberForm.location} onChange={e => setChamberForm({ ...chamberForm, location: e.target.value })} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-900 dark:text-white" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Capacity (Tons)</label>
+                                        <input required type="number" step="0.1" placeholder="e.g. 50" value={chamberForm.capacity_tonnes} onChange={e => setChamberForm({ ...chamberForm, capacity_tonnes: e.target.value })} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-900 dark:text-white" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">Crop Preset Configuration</label>
+                                    <select value={chamberForm.crop_stored} onChange={e => setChamberForm({ ...chamberForm, crop_stored: e.target.value })} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary text-slate-900 dark:text-white appearance-none">
+                                        <option>Tomatoes</option><option>Potatoes</option><option>Mangoes</option><option>Onions</option><option>Apples</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="mt-8 flex gap-3">
+                                <button type="button" onClick={() => setShowAddModal(false)} className="flex-1 px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                                <button type="submit" disabled={submitting} className="flex-1 px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-dark text-white font-semibold transition-all shadow-lg shadow-primary/30 flex items-center justify-center gap-2">
+                                    {submitting ? <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span> : <span className="material-symbols-outlined text-[18px]">add</span>}
+                                    {submitting ? 'Connecting...' : 'Connect'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
