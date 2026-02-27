@@ -8,6 +8,7 @@ export default function Landing() {
     const [password, setPassword] = useState('')
     const [emailError, setEmailError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [contactStatus, setContactStatus] = useState('idle') // idle, loading, success
 
     const openModal = (mode) => setAuthModal({ isOpen: true, mode })
     const closeModal = () => {
@@ -45,6 +46,16 @@ export default function Landing() {
         }, 1000)
     }
 
+    const handleContactSubmit = (e) => {
+        e.preventDefault()
+        setContactStatus('loading')
+        setTimeout(() => {
+            setContactStatus('success')
+            // Reset after 5 seconds
+            setTimeout(() => setContactStatus('idle'), 5000)
+        }, 1500)
+    }
+
     return (
         <div className="min-h-screen bg-[#0f172a] text-white flex flex-col relative overflow-hidden scroll-smooth">
             {/* Background Orbs */}
@@ -65,8 +76,8 @@ export default function Landing() {
                 <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
                     <a href="#problem" className="hover:text-white transition-colors">The Problem</a>
                     <a href="#solution" className="hover:text-white transition-colors">The Solution</a>
-                    <a href="#features" className="hover:text-white transition-colors">Features</a>
-                    <a href="#technology" className="hover:text-white transition-colors">Technology</a>
+                    <a href="#features" className="hover:text-white transition-colors">Platform Features</a>
+                    <a href="#technology" className="hover:text-white transition-colors">AgriTech</a>
                     <a href="#contact" className="hover:text-white transition-colors">Contact</a>
                 </div>
                 <div className="flex items-center gap-3">
@@ -197,101 +208,225 @@ export default function Landing() {
                 </div>
             </section>
 
-            {/* Feature Highlights (Re-used Core Capabilities as Solution Proof) */}
+            {/* Platform Features Section (Refined 2x2 Grid) */}
             <section id="features" className="relative z-10 pb-24 px-6 bg-slate-900/60">
                 <div className="max-w-7xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
-                            <div className="w-14 h-14 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
-                                <span className="material-symbols-outlined text-[28px]">thermostat</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {/* Feature 1 */}
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition-colors"></div>
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-blue-400 flex items-center justify-center mb-6 shadow-inner border border-blue-500/20">
+                                <span className="material-symbols-outlined text-[32px]">sensors</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Intelligent Environmental Control</h3>
-                            <p className="text-slate-400 leading-relaxed">Continuous edge-monitoring hardware tracks temperature and humidity across all active chambers. Instantly triggers critical alerts upon threshold breach rather than waiting for inspection.</p>
+                            <h3 className="text-2xl font-bold text-white mb-4">IoT Sensor Mesh Network</h3>
+                            <p className="text-slate-400 leading-relaxed text-lg">
+                                Deploy industrial-grade IoT probes across your facilities for high-fidelity temperature, humidity, and atmospheric data capture. Instantly triggers critical alerts upon threshold breach rather than waiting for manual inspection.
+                            </p>
                         </div>
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
-                            <div className="w-14 h-14 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mb-6">
-                                <span className="material-symbols-outlined text-[28px]">inventory_2</span>
+                        {/* Feature 2 */}
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-bl-full group-hover:bg-orange-500/10 transition-colors"></div>
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 text-orange-400 flex items-center justify-center mb-6 shadow-inner border border-orange-500/20">
+                                <span className="material-symbols-outlined text-[32px]">model_training</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">AI Inventory Expiry Prediction</h3>
-                            <p className="text-slate-400 leading-relaxed">Our unified dashboard calculates precise crop expiry dates based on their unique environmental history, solving the problem of untracked waste and allowing preemptive action.</p>
+                            <h3 className="text-2xl font-bold text-white mb-4">Predictive Spoilage AI</h3>
+                            <p className="text-slate-400 leading-relaxed text-lg">
+                                Our proprietary machine learning models analyze complex environmental history to definitively calculate precise crop expiry dates, allowing you to identify at-risk batches weeks before visible spoilage occurs.
+                            </p>
                         </div>
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
-                            <div className="w-14 h-14 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-6">
-                                <span className="material-symbols-outlined text-[28px]">local_shipping</span>
+                        {/* Feature 3 */}
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-bl-full group-hover:bg-purple-500/10 transition-colors"></div>
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 text-purple-400 flex items-center justify-center mb-6 shadow-inner border border-purple-500/20">
+                                <span className="material-symbols-outlined text-[32px]">local_shipping</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Market-Demand Dispatch Sync</h3>
-                            <p className="text-slate-400 leading-relaxed">Fixes the disconnect between warehouses and markets. Our dispatch scoring algorithms automatically match decaying produce with urgent external market demands.</p>
+                            <h3 className="text-2xl font-bold text-white mb-4">Automated Dispatch Routing</h3>
+                            <p className="text-slate-400 leading-relaxed text-lg">
+                                Fixes the disconnect between warehouses and markets. Our dispatch scoring algorithms automatically integrate with live market demand and weather data to route decaying produce to the nearest profitable market.
+                            </p>
+                        </div>
+                        {/* Feature 4 */}
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition-colors"></div>
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-400 flex items-center justify-center mb-6 shadow-inner border border-emerald-500/20">
+                                <span className="material-symbols-outlined text-[32px]">verified_user</span>
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-4">Immutable Traceability</h3>
+                            <p className="text-slate-400 leading-relaxed text-lg">
+                                Ensure end-to-end supply chain transparency. Every environmental fluctuation, alert, and dispatch decision is permanently logged, creating an auditable journey for every single harvest batch in your facility.
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Technology Stack */}
-            <section id="technology" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/40">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            {/* AgriTech Modernization Section */}
+            <section id="technology" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/40 overflow-hidden">
+                <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
                     <div className="w-full md:w-1/2">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Powered By Modern Architecture</h2>
-                        <p className="text-slate-400 text-lg leading-relaxed mb-8">
-                            Solving a national crisis requires infrastructure that scales. AgriStoreSmart relies on a zero-latency stack designed to handle massive facility throughput nationwide. By leveraging modern API connectivity and optimized edge runtimes, we guarantee millisecond responsiveness.
-                        </p>
-                        <ul className="space-y-5">
-                            <li className="flex items-center gap-4 text-slate-300">
-                                <span className="material-symbols-outlined text-emerald-400 bg-emerald-400/10 p-2 rounded-xl text-[24px]">check</span>
-                                <span className="text-lg"><b>FastAPI</b> backend for async high-performance I/O</span>
-                            </li>
-                            <li className="flex items-center gap-4 text-slate-300">
-                                <span className="material-symbols-outlined text-teal-400 bg-teal-400/10 p-2 rounded-xl text-[24px]">check</span>
-                                <span className="text-lg"><b>React 18 & Vite</b> for instant client rendering</span>
-                            </li>
-                            <li className="flex items-center gap-4 text-slate-300">
-                                <span className="material-symbols-outlined text-sky-400 bg-sky-400/10 p-2 rounded-xl text-[24px]">check</span>
-                                <span className="text-lg"><b>Tailwind CSS V3</b> enforcing strict UI/UX design systems</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="w-full md:w-1/2 rounded-3xl overflow-hidden border border-slate-700/50 shadow-2xl shadow-blue-900/20 relative">
-                        {/* Fake Code Block UI */}
-                        <div className="bg-slate-900 p-4 border-b border-slate-800 flex items-center justify-between">
-                            <div className="flex gap-2">
-                                <div className="w-3.5 h-3.5 rounded-full bg-rose-500"></div>
-                                <div className="w-3.5 h-3.5 rounded-full bg-amber-500"></div>
-                                <div className="w-3.5 h-3.5 rounded-full bg-emerald-500"></div>
-                            </div>
-                            <span className="text-xs text-slate-500 font-mono">agristoresmart/ai_engine.py</span>
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-sm font-semibold mb-6">
+                            <span className="material-symbols-outlined text-[16px] text-emerald-400">architecture</span>
+                            Next-Gen Agriculture
                         </div>
-                        <div className="bg-[#0d1117] p-8 font-mono text-[15px] overflow-x-auto text-slate-300 leading-[1.6]">
-                            <span className="text-pink-400">async</span> <span className="text-blue-400">def</span> <span className="text-emerald-300">process_telemetry</span>(sensor_data):<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500 italic"># Run predictive model on live stream</span><br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;risk_score = <span className="text-pink-400">await</span> ai_engine.<span className="text-emerald-300">evaluate_spoilage</span>(<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp=sensor_data.temp,<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;humidity=sensor_data.humidity<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;)<br /><br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">if</span> risk_score &gt; <span className="text-orange-400">0.85</span>:<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500 italic"># Prevent loss by preemptive action</span><br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">await</span> alerts.<span className="text-emerald-300">dispatch_critical_warning</span>(<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target=sensor_data.chamber_id<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Bringing Warehouses into the Modern Era</h2>
+                        <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                            Solving a national food crisis requires infrastructure that scales beyond manual clipboards and guesswork. We utilize the latest advancements in agricultural technology to digitize the entire storage lifecycle.
+                        </p>
+                        <div className="space-y-6">
+                            <div className="flex gap-4">
+                                <div className="mt-1 w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 border border-slate-700">
+                                    <span className="material-symbols-outlined text-teal-400">precision_manufacturing</span>
+                                </div>
+                                <div>
+                                    <h4 className="text-xl font-bold text-white mb-1">Edge Computing & IoT</h4>
+                                    <p className="text-slate-400">Processing telemetry locally at the facility edge ensures critical alerts trigger instantly, even during poor rural internet connectivity.</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <div className="mt-1 w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 border border-slate-700">
+                                    <span className="material-symbols-outlined text-blue-400">cloud_sync</span>
+                                </div>
+                                <div>
+                                    <h4 className="text-xl font-bold text-white mb-1">Centralized Cloud Analytics</h4>
+                                    <p className="text-slate-400">Aggregating data globally allows our algorithms to continuously learn from diverse spoilage scenarios across different climates.</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-4">
+                                <div className="mt-1 w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center flex-shrink-0 border border-slate-700">
+                                    <span className="material-symbols-outlined text-purple-400">hub</span>
+                                </div>
+                                <div>
+                                    <h4 className="text-xl font-bold text-white mb-1">Smart Logistics Integrations</h4>
+                                    <p className="text-slate-400">API-first architecture allows seamless bridging between warehouse inventory status and third-party trucking and market pricing platforms.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Visual Graphic Representation */}
+                    <div className="w-full md:w-1/2 relative h-[500px]">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-slate-800 to-slate-900 rounded-3xl border border-slate-700 p-8 shadow-2xl flex flex-col justify-between overflow-hidden">
+                            {/* Decorative Grid */}
+                            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none"></div>
+
+                            <div className="relative z-10 flex justify-between items-start">
+                                <div className="bg-slate-950/50 backdrop-blur-md px-4 py-2 rounded-xl border border-slate-700/50">
+                                    <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest block mb-1">System Status</span>
+                                    <span className="text-white font-mono flex items-center gap-2">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div> Active Sync
+                                    </span>
+                                </div>
+                                <div className="w-12 h-12 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center shadow-lg">
+                                    <span className="material-symbols-outlined text-slate-300">wifi_tethering</span>
+                                </div>
+                            </div>
+
+                            {/* Floating Architecture Cards */}
+                            <div className="relative z-10 space-y-4">
+                                <div className="bg-slate-900/80 backdrop-blur-lg border border-slate-700 p-4 rounded-2xl flex items-center gap-4 transform translate-x-4">
+                                    <div className="w-10 h-10 rounded-lg bg-teal-500/20 text-teal-400 flex items-center justify-center"><span className="material-symbols-outlined">router</span></div>
+                                    <div>
+                                        <div className="text-sm font-bold text-white">Edge Sensor Nodes</div>
+                                        <div className="text-xs text-slate-400 font-mono">15ms latency • Local processing</div>
+                                    </div>
+                                </div>
+                                <div className="bg-emerald-900/40 backdrop-blur-lg border border-emerald-500/30 p-4 rounded-2xl flex items-center gap-4 shadow-lg shadow-emerald-900/20">
+                                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center"><span className="material-symbols-outlined">memory</span></div>
+                                    <div>
+                                        <div className="text-sm font-bold text-white">AI Prediction Engine</div>
+                                        <div className="text-xs text-emerald-200/70 font-mono">Evaluating risk vectors...</div>
+                                    </div>
+                                </div>
+                                <div className="bg-slate-900/80 backdrop-blur-lg border border-slate-700 p-4 rounded-2xl flex items-center gap-4 transform -translate-x-4">
+                                    <div className="w-10 h-10 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center"><span className="material-symbols-outlined">cloud</span></div>
+                                    <div>
+                                        <div className="text-sm font-bold text-white">Global Cloud Registry</div>
+                                        <div className="text-xs text-slate-400 font-mono">Immutable ledger updated</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Contact / CTA */}
-            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/60">
-                <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/50 p-10 md:p-16 text-center shadow-2xl shadow-emerald-900/10">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to secure your harvest?</h2>
-                    <p className="text-slate-400 text-xl mb-10 max-w-3xl mx-auto font-light">
-                        Don't let inadequate environmental controls spoil another inventory batch. Join the platform that empowers warehouse managers and protects thousands of tons of crops nationwide.
-                    </p>
-                    <div className="flex justify-center gap-6">
-                        <button onClick={() => openModal('signup')} className="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-lg shadow-lg shadow-emerald-500/20 transition-all hover:-translate-y-1 flex items-center gap-2">
-                            Deploy Infrastructure
-                            <span className="material-symbols-outlined text-[20px]">cloud_upload</span>
-                        </button>
+            {/* Redesigned Contact / Inquiry Form */}
+            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950">
+                <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
+                    {/* Text Column */}
+                    <div className="w-full lg:w-5/12">
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6">Partner With Us</h2>
+                        <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                            Whether you manage a single cold storage unit or a nationwide logistics network, our platform adapts to your scale. Get in touch with our engineering team to schedule a technical demonstration.
+                        </p>
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4 text-slate-300 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                                <span className="material-symbols-outlined text-emerald-400 text-[28px]">mail</span>
+                                <div>
+                                    <div className="text-sm text-slate-500 font-semibold">Email Us</div>
+                                    <div className="font-medium">hello@agristoresmart.com</div>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4 text-slate-300 bg-slate-900/50 p-4 rounded-2xl border border-slate-800">
+                                <span className="material-symbols-outlined text-emerald-400 text-[28px]">location_on</span>
+                                <div>
+                                    <div className="text-sm text-slate-500 font-semibold">Headquarters</div>
+                                    <div className="font-medium">Bangalore, India — AgriTech Hub</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p className="text-sm text-slate-500 mt-6 leading-relaxed">
-                        Access full administrative controls through the dashboard demo.
-                    </p>
+
+                    {/* Form Column */}
+                    <div className="w-full lg:w-7/12">
+                        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-3xl p-8 md:p-10 shadow-2xl">
+                            {contactStatus === 'success' ? (
+                                <div className="h-full min-h-[400px] flex flex-col items-center justify-center text-center animate-fade-in">
+                                    <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mb-6">
+                                        <span className="material-symbols-outlined text-emerald-400 text-[40px]">check_circle</span>
+                                    </div>
+                                    <h3 className="text-3xl font-bold text-white mb-4">Message Sent!</h3>
+                                    <p className="text-slate-400 text-lg">Thank you for reaching out. A member of our deployment team will contact you within 24 hours.</p>
+                                    <button onClick={() => setContactStatus('idle')} className="mt-8 text-emerald-400 hover:text-white font-semibold transition-colors">
+                                        Send another message
+                                    </button>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleContactSubmit} className="space-y-6">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
+                                            <input required type="text" placeholder="John Doe" className="w-full bg-slate-950/50 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-white placeholder:text-slate-600" />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Organization</label>
+                                            <input required type="text" placeholder="Harvest Logistics Ltd." className="w-full bg-slate-950/50 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-white placeholder:text-slate-600" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
+                                        <input required type="email" placeholder="john@company.com" className="w-full bg-slate-950/50 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-white placeholder:text-slate-600" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Project Details</label>
+                                        <textarea required rows="4" placeholder="Tell us about the facilities you want to integrate..." className="w-full bg-slate-950/50 border border-slate-700 focus:border-emerald-500 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all text-white placeholder:text-slate-600 resize-none"></textarea>
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        disabled={contactStatus === 'loading'}
+                                        className="w-full flex items-center justify-center py-4 px-6 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-lg rounded-xl transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    >
+                                        {contactStatus === 'loading' ? (
+                                            <span className="w-6 h-6 border-2 border-slate-900/20 border-t-slate-900 rounded-full animate-spin"></span>
+                                        ) : (
+                                            <>Submit Inquiry <span className="material-symbols-outlined ml-2 text-[20px]">send</span></>
+                                        )}
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -408,6 +543,7 @@ export default function Landing() {
                             <p className="text-sm text-slate-400">
                                 {authModal.mode === 'login' ? "Don't have an account? " : "Already have an account? "}
                                 <button
+                                    type="button"
                                     onClick={() => {
                                         setAuthModal(prev => ({ ...prev, mode: prev.mode === 'login' ? 'signup' : 'login' }))
                                         setEmailError('')
