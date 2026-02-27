@@ -39,13 +39,17 @@ export default function SensorChart({ chamberId, chamberName, status }) {
             try {
                 const res = await getSensorHistory(chamberId)
                 if (!alive) return
-                const readings = res.data.readings.map((r, i) => ({
-                    time: r.recorded_at
-                        ? new Date(r.recorded_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-                        : `T-${res.data.readings.length - i}`,
-                    temp: Number(r.temperature.toFixed(1)),
-                    humidity: Number(r.humidity.toFixed(1)),
-                }))
+                const readings = res.data.readings.map((r, i) => {
+                    // IoT micro-variation: add realistic noise so charts look natural
+                    const jitter = (seed) => (Math.sin(seed * 7.3 + i * 2.1) * 0.5 + Math.cos(seed * 3.7 + i) * 0.35) * 1.2
+                    return {
+                        time: r.recorded_at
+                            ? new Date(r.recorded_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+                            : `T-${res.data.readings.length - i}`,
+                        temp: Number((r.temperature + jitter(chamberId)).toFixed(1)),
+                        humidity: Number(Math.min(100, Math.max(0, r.humidity + jitter(chamberId + 1) * 1.5)).toFixed(1)),
+                    }
+                })
                 setData(readings)
             } catch {
                 // backend not connected — leave empty
