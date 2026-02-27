@@ -60,22 +60,24 @@ export default function Landing() {
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <span className="material-symbols-outlined text-white text-[22px]">smart_toy</span>
                     </div>
-                    <span className="text-xl font-bold tracking-tight text-white">Elite <span className="text-emerald-400">AgriStoreSmart</span></span>
+                    <span className="text-xl font-bold tracking-tight text-white hidden sm:block">Elite <span className="text-emerald-400">AgriStoreSmart</span></span>
                 </div>
-                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
+                    <a href="#problem" className="hover:text-white transition-colors">The Problem</a>
+                    <a href="#solution" className="hover:text-white transition-colors">The Solution</a>
                     <a href="#features" className="hover:text-white transition-colors">Features</a>
                     <a href="#technology" className="hover:text-white transition-colors">Technology</a>
                     <a href="#contact" className="hover:text-white transition-colors">Contact</a>
                 </div>
                 <div className="flex items-center gap-3">
                     <button onClick={() => openModal('login')} className="hidden sm:block px-5 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors">Log in</button>
-                    <button onClick={() => openModal('signup')} className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white font-medium transition-all text-sm backdrop-blur-sm">Sign Up</button>
+                    <button onClick={() => openModal('signup')} className="px-5 py-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-white font-medium transition-all text-sm backdrop-blur-sm shadow-md">Sign Up</button>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <main className="relative z-10 flex flex-col items-center justify-center px-6 pt-40 pb-20 min-h-screen">
-                <div className="max-w-4xl mx-auto text-center">
+            <main className="relative z-10 flex flex-col items-center justify-center px-4 pt-40 pb-20 min-h-screen">
+                <div className="max-w-5xl mx-auto text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-semibold mb-8 animate-fade-in-up">
                         <span className="relative flex h-2 w-2">
                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
@@ -97,45 +99,128 @@ export default function Landing() {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style={{ animationDelay: '300ms' }}>
                         <button onClick={() => openModal('signup')} className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-bold text-lg shadow-xl shadow-emerald-500/25 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
-                            Get Started
+                            Start Optimizing Today
                             <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
                         </button>
-                        <a href="#features" className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 text-white font-bold text-lg backdrop-blur-sm transition-all flex items-center justify-center gap-2">
-                            <span className="material-symbols-outlined text-[20px]">explore</span>
-                            Explore Features
+                        <a href="#problem" className="w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 text-white font-bold text-lg backdrop-blur-sm transition-all flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-[20px]">keyboard_arrow_down</span>
+                            Understand the Crisis
                         </a>
                     </div>
                 </div>
             </main>
 
-            {/* Feature Highlights */}
-            <section id="features" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/20">
+            {/* The Problem Section */}
+            <section id="problem" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950/40">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">Core Capabilities</h2>
-                        <p className="text-slate-400 max-w-2xl mx-auto text-lg">Next-generation supply chain protection designed specifically for agricultural endurance.</p>
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-rose-500/20 text-rose-500 mb-6 border border-rose-500/30">
+                            <span className="material-symbols-outlined text-3xl">warning</span>
+                        </div>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">Post-Harvest Storage Inefficiency</h2>
+                        <p className="text-slate-300 max-w-3xl mx-auto text-lg leading-relaxed">
+                            A significant portion of agricultural produce in India is lost after harvest due to inadequate storage infrastructure, poor environmental monitoring, fragmented warehouse management, and a severe lack of real-time inventory visibility.
+                        </p>
                     </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                        {/* Challenges */}
+                        <div className="bg-slate-900/60 p-8 rounded-3xl border border-slate-700/50 backdrop-blur-md shadow-xl h-full flex flex-col justify-center">
+                            <h3 className="text-xl font-bold text-rose-400 mb-6 flex items-center gap-3">
+                                <span className="material-symbols-outlined">report_problem</span>
+                                Challenges Faced
+                            </h3>
+                            <ul className="space-y-4">
+                                <li className="flex items-start gap-4 text-slate-300">
+                                    <span className="mt-1 w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                    <span>Absence of live temperature and humidity monitoring across chambers.</span>
+                                </li>
+                                <li className="flex items-start gap-4 text-slate-300">
+                                    <span className="mt-1 w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                    <span>Overstocking or critical underutilization of expensive storage units.</span>
+                                </li>
+                                <li className="flex items-start gap-4 text-slate-300">
+                                    <span className="mt-1 w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                    <span>Limited traceability of stored produce leading to untracked waste.</span>
+                                </li>
+                                <li className="flex items-start gap-4 text-slate-300">
+                                    <span className="mt-1 w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                    <span>Delayed detection of spoilage conditions causing massive cross-contamination.</span>
+                                </li>
+                                <li className="flex items-start gap-4 text-slate-300">
+                                    <span className="mt-1 w-2 h-2 rounded-full bg-rose-500 flex-shrink-0"></span>
+                                    <span>Poor coordination between warehouse managers and active market demand.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        {/* Consequences */}
+                        <div className="bg-gradient-to-br from-rose-950/30 to-slate-900/60 p-8 rounded-3xl border border-rose-900/30 backdrop-blur-md shadow-xl h-full flex flex-col justify-center relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-rose-500/10 rounded-full blur-[80px] pointer-events-none"></div>
+                            <h3 className="text-xl font-bold text-white mb-6">The Devastating Impact</h3>
+                            <p className="text-slate-400 mb-6">These systemic inefficiencies lead to compounding disastrous outcomes across the entire agricultural economic pipeline:</p>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-slate-900/80 p-5 rounded-2xl border border-rose-500/20">
+                                    <span className="block text-2xl mb-2 font-bold text-rose-400">40%</span>
+                                    <span className="text-sm text-slate-300">Post-harvest crop losses</span>
+                                </div>
+                                <div className="bg-slate-900/80 p-5 rounded-2xl border border-orange-500/20">
+                                    <span className="block text-2xl mb-2 font-bold text-orange-400">₹₹₹</span>
+                                    <span className="text-sm text-slate-300">Reduced farmer income</span>
+                                </div>
+                                <div className="bg-slate-900/80 p-5 rounded-2xl border border-amber-500/20">
+                                    <span className="block text-2xl mb-2 font-bold text-yellow-400">Broken</span>
+                                    <span className="text-sm text-slate-300">Supply chain disruptions</span>
+                                </div>
+                                <div className="bg-slate-900/80 p-5 rounded-2xl border border-teal-500/20">
+                                    <span className="block text-2xl mb-2 font-bold text-teal-400">High</span>
+                                    <span className="text-sm text-slate-300">Price market volatility</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* The Solution Section */}
+            <section id="solution" className="relative z-10 py-24 px-6 bg-slate-900/60">
+                <div className="max-w-7xl mx-auto text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mb-6 border border-emerald-500/30 relative">
+                        <span className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></span>
+                        <span className="material-symbols-outlined text-3xl">verified</span>
+                    </div>
+                    <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">The AgriStoreSmart Solution</h2>
+                    <p className="text-slate-300 max-w-4xl mx-auto text-xl leading-relaxed font-light">
+                        We have designed a scalable, data-driven warehouse management framework that <b className="text-white font-semibold">optimizes agricultural storage conditions</b>, tracks inventory intelligently, and orchestrates predictive distribution planning to minimize post-harvest losses and maximize supply chain efficiency.
+                    </p>
+                </div>
+            </section>
+
+            {/* Feature Highlights (Re-used Core Capabilities as Solution Proof) */}
+            <section id="features" className="relative z-10 pb-24 px-6 bg-slate-900/60">
+                <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800/80 transition-all hover:-translate-y-1 group">
-                            <div className="w-14 h-14 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
+                            <div className="w-14 h-14 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
                                 <span className="material-symbols-outlined text-[28px]">thermostat</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Live Telemetry</h3>
-                            <p className="text-slate-400 leading-relaxed">Continuous hardware monitoring of temperature and humidity across all active chambers. Instantly triggers critical alerts upon threshold breach to prevent crop loss.</p>
+                            <h3 className="text-xl font-bold text-white mb-3">Intelligent Environmental Control</h3>
+                            <p className="text-slate-400 leading-relaxed">Continuous edge-monitoring hardware tracks temperature and humidity across all active chambers. Instantly triggers critical alerts upon threshold breach rather than waiting for inspection.</p>
                         </div>
-                        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800/80 transition-all hover:-translate-y-1 group">
-                            <div className="w-14 h-14 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
+                            <div className="w-14 h-14 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center mb-6">
                                 <span className="material-symbols-outlined text-[28px]">inventory_2</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Predictive Inventory</h3>
-                            <p className="text-slate-400 leading-relaxed">Our AI calculates the exact crop expiry dates based on environmental exposure history. Identify at-risk batches weeks before visible spoilage occurs.</p>
+                            <h3 className="text-xl font-bold text-white mb-3">AI Inventory Expiry Prediction</h3>
+                            <p className="text-slate-400 leading-relaxed">Our unified dashboard calculates precise crop expiry dates based on their unique environmental history, solving the problem of untracked waste and allowing preemptive action.</p>
                         </div>
-                        <div className="bg-slate-900/60 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800/80 transition-all hover:-translate-y-1 group">
-                            <div className="w-14 h-14 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-2xl p-8 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-lg">
+                            <div className="w-14 h-14 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-6">
                                 <span className="material-symbols-outlined text-[28px]">local_shipping</span>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Market Dispatch</h3>
-                            <p className="text-slate-400 leading-relaxed">Intelligent dispatch scoring algorithms match decaying produce with urgent market demands, calculating transport viability against live weather data.</p>
+                            <h3 className="text-xl font-bold text-white mb-3">Market-Demand Dispatch Sync</h3>
+                            <p className="text-slate-400 leading-relaxed">Fixes the disconnect between warehouses and markets. Our dispatch scoring algorithms automatically match decaying produce with urgent external market demands.</p>
                         </div>
                     </div>
                 </div>
@@ -143,42 +228,46 @@ export default function Landing() {
 
             {/* Technology Stack */}
             <section id="technology" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/40">
-                <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-16">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
                     <div className="w-full md:w-1/2">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6">Built on Modern Architecture</h2>
-                        <p className="text-slate-400 text-lg leading-relaxed mb-6">
-                            AgriStoreSmart relies on a zero-latency stack designed to scale with massive facility throughput. By leveraging modern WebSockets and optimized edge runtimes, we guarantee millisecond responsiveness.
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6">Powered By Modern Architecture</h2>
+                        <p className="text-slate-400 text-lg leading-relaxed mb-8">
+                            Solving a national crisis requires infrastructure that scales. AgriStoreSmart relies on a zero-latency stack designed to handle massive facility throughput nationwide. By leveraging modern API connectivity and optimized edge runtimes, we guarantee millisecond responsiveness.
                         </p>
-                        <ul className="space-y-4">
-                            <li className="flex items-center gap-3 text-slate-300">
-                                <span className="material-symbols-outlined text-emerald-400 bg-emerald-400/10 p-1.5 rounded-lg text-[20px]">check</span>
-                                <b>FastAPI</b> backend for async high-performance I/O
+                        <ul className="space-y-5">
+                            <li className="flex items-center gap-4 text-slate-300">
+                                <span className="material-symbols-outlined text-emerald-400 bg-emerald-400/10 p-2 rounded-xl text-[24px]">check</span>
+                                <span className="text-lg"><b>FastAPI</b> backend for async high-performance I/O</span>
                             </li>
-                            <li className="flex items-center gap-3 text-slate-300">
-                                <span className="material-symbols-outlined text-teal-400 bg-teal-400/10 p-1.5 rounded-lg text-[20px]">check</span>
-                                <b>React 18 & Vite</b> for instant client rendering
+                            <li className="flex items-center gap-4 text-slate-300">
+                                <span className="material-symbols-outlined text-teal-400 bg-teal-400/10 p-2 rounded-xl text-[24px]">check</span>
+                                <span className="text-lg"><b>React 18 & Vite</b> for instant client rendering</span>
                             </li>
-                            <li className="flex items-center gap-3 text-slate-300">
-                                <span className="material-symbols-outlined text-sky-400 bg-sky-400/10 p-1.5 rounded-lg text-[20px]">check</span>
-                                <b>Tailwind CSS V3</b> enforcing strict glassmorphic design systems
+                            <li className="flex items-center gap-4 text-slate-300">
+                                <span className="material-symbols-outlined text-sky-400 bg-sky-400/10 p-2 rounded-xl text-[24px]">check</span>
+                                <span className="text-lg"><b>Tailwind CSS V3</b> enforcing strict UI/UX design systems</span>
                             </li>
                         </ul>
                     </div>
-                    <div className="w-full md:w-1/2 rounded-2xl overflow-hidden border border-slate-700/50 shadow-2xl relative">
+                    <div className="w-full md:w-1/2 rounded-3xl overflow-hidden border border-slate-700/50 shadow-2xl shadow-blue-900/20 relative">
                         {/* Fake Code Block UI */}
-                        <div className="bg-slate-900 p-4 border-b border-slate-800 flex items-center gap-2">
-                            <div className="w-3 h-3 rounded-full bg-rose-500"></div>
-                            <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                            <div className="w-3 h-3 rounded-full bg-emerald-500"></div>
+                        <div className="bg-slate-900 p-4 border-b border-slate-800 flex items-center justify-between">
+                            <div className="flex gap-2">
+                                <div className="w-3.5 h-3.5 rounded-full bg-rose-500"></div>
+                                <div className="w-3.5 h-3.5 rounded-full bg-amber-500"></div>
+                                <div className="w-3.5 h-3.5 rounded-full bg-emerald-500"></div>
+                            </div>
+                            <span className="text-xs text-slate-500 font-mono">agristoresmart/ai_engine.py</span>
                         </div>
-                        <div className="bg-[#0d1117] p-6 font-mono text-sm overflow-x-auto text-slate-300">
+                        <div className="bg-[#0d1117] p-8 font-mono text-[15px] overflow-x-auto text-slate-300 leading-[1.6]">
                             <span className="text-pink-400">async</span> <span className="text-blue-400">def</span> <span className="text-emerald-300">process_telemetry</span>(sensor_data):<br />
-                            &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500"># Run predictive model on live stream</span><br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500 italic"># Run predictive model on live stream</span><br />
                             &nbsp;&nbsp;&nbsp;&nbsp;risk_score = <span className="text-pink-400">await</span> ai_engine.<span className="text-emerald-300">evaluate_spoilage</span>(<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;temp=sensor_data.temp,<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;humidity=sensor_data.humidity<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;)<br /><br />
                             &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">if</span> risk_score &gt; <span className="text-orange-400">0.85</span>:<br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-slate-500 italic"># Prevent loss by preemptive action</span><br />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-pink-400">await</span> alerts.<span className="text-emerald-300">dispatch_critical_warning</span>(<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;target=sensor_data.chamber_id<br />
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br />
@@ -188,37 +277,37 @@ export default function Landing() {
             </section>
 
             {/* Contact / CTA */}
-            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5">
-                <div className="max-w-4xl mx-auto rounded-3xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 p-10 md:p-16 text-center shadow-2xl shadow-emerald-900/20">
+            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/60">
+                <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 border border-slate-700/50 p-10 md:p-16 text-center shadow-2xl shadow-emerald-900/10">
                     <h2 className="text-3xl md:text-5xl font-bold mb-6">Ready to secure your harvest?</h2>
-                    <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
-                        Don't let inadequate environmental controls spoil your inventory. Join the platform that protects thousands of tons of crops nationwide.
+                    <p className="text-slate-400 text-xl mb-10 max-w-3xl mx-auto font-light">
+                        Don't let inadequate environmental controls spoil another inventory batch. Join the platform that empowers warehouse managers and protects thousands of tons of crops nationwide.
                     </p>
-                    <form className="max-w-md mx-auto flex flex-col sm:flex-row gap-3" onSubmit={(e) => { e.preventDefault(); openModal('signup'); }}>
-                        <input type="email" placeholder="Enter your email address" required className="flex-1 bg-slate-950/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all placeholder:text-slate-500" />
-                        <button type="submit" className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold transition-colors whitespace-nowrap hidden sm:block">
-                            Start Trial
+                    <div className="flex justify-center gap-6">
+                        <button onClick={() => openModal('signup')} className="px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-lg shadow-lg shadow-emerald-500/20 transition-all hover:-translate-y-1 flex items-center gap-2">
+                            Deploy Infrastructure
+                            <span className="material-symbols-outlined text-[20px]">cloud_upload</span>
                         </button>
-                    </form>
-                    <p className="text-xs text-slate-500 mt-4 leading-relaxed">
-                        By signing up, you agree to our Terms of Service. No credit card required.
+                    </div>
+                    <p className="text-sm text-slate-500 mt-6 leading-relaxed">
+                        Access full administrative controls through the dashboard demo.
                     </p>
                 </div>
             </section>
 
             {/* Simple Footer */}
-            <footer className="relative z-10 border-t border-slate-800/80 bg-slate-950/50 py-10 px-6">
+            <footer className="relative z-10 border-t border-slate-800/80 bg-[#0f172a] py-10 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined text-emerald-500">smart_toy</span>
-                        <span className="font-bold text-slate-300">Elite AgriStoreSmart</span>
+                        <span className="material-symbols-outlined text-emerald-500 bg-emerald-500/10 p-1.5 rounded-lg">smart_toy</span>
+                        <span className="font-bold text-slate-300 text-lg">Elite AgriStoreSmart</span>
                     </div>
                     <div className="text-sm text-slate-500 text-center md:text-left">
-                        &copy; 2026 Hackathon Final Submission. Crafted with precision.
+                        &copy; 2026 Hackathon Final Submission. Engineered to solve real-world problems.
                     </div>
                     <div className="flex gap-4">
-                        <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-emerald-500 transition-colors"><span className="material-symbols-outlined text-[20px]">code</span></a>
-                        <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-emerald-500 transition-colors"><span className="material-symbols-outlined text-[20px]">share</span></a>
+                        <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-emerald-500 hover:bg-emerald-500/10 transition-all"><span className="material-symbols-outlined text-[20px]">code</span></a>
+                        <a href="#" className="w-10 h-10 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:text-white hover:border-emerald-500 hover:bg-emerald-500/10 transition-all"><span className="material-symbols-outlined text-[20px]">share</span></a>
                     </div>
                 </div>
             </footer>
@@ -250,11 +339,11 @@ export default function Landing() {
 
                             {/* SSO Buttons */}
                             <div className="space-y-3 mb-6">
-                                <button onClick={() => handleSocialAuth('google')} className="w-full relative flex items-center justify-center gap-3 px-4 py-3 bg-white hover:bg-slate-100 text-slate-900 font-semibold rounded-xl transition-colors">
+                                <button type="button" onClick={() => handleSocialAuth('google')} className="w-full relative flex items-center justify-center gap-3 px-4 py-3 bg-white hover:bg-slate-100 text-slate-900 font-semibold rounded-xl transition-colors">
                                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 absolute left-4" />
                                     Continue with Google
                                 </button>
-                                <button onClick={() => handleSocialAuth('microsoft')} className="w-full relative flex items-center justify-center gap-3 px-4 py-3 bg-[#2F2F2F] hover:bg-[#3F3F3F] text-white font-semibold flex border border-slate-700/50 rounded-xl transition-colors">
+                                <button type="button" onClick={() => handleSocialAuth('microsoft')} className="w-full relative flex items-center justify-center gap-3 px-4 py-3 bg-[#2F2F2F] hover:bg-[#3F3F3F] text-white font-semibold flex border border-slate-700/50 rounded-xl transition-colors cursor-pointer">
                                     <svg className="w-5 h-5 absolute left-4" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10 0H0V10H10V0Z" fill="#F25022" />
                                         <path d="M21 0H11V10H21V0Z" fill="#7FBA00" />
