@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getAlerts, resolveAlert } from '../api/client'
+import { LoadingSkeleton, EmptyState } from '../components/UXStates'
 
 function Icon({ name, className = '' }) {
     return <span className={`material-symbols-outlined ${className}`}>{name}</span>
@@ -82,21 +83,14 @@ export default function Alerts() {
                     </button>
                 </div>
 
-                {loading && (
-                    <div className="flex justify-center items-center py-16 gap-3 text-slate-500">
-                        <div className="spinner" /><span>Loading alerts...</span>
-                    </div>
-                )}
+                {loading && <LoadingSkeleton count={3} variant="row" />}
 
                 {!loading && filtered.length === 0 && (
-                    <div style={{ background: 'rgba(24,44,37,0.7)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.08)' }}
-                        className="rounded-xl p-16 text-center">
-                        <div className="text-5xl mb-4 text-emerald-400">
-                            <Icon name="check_circle" className="text-6xl" />
-                        </div>
-                        <div className="text-xl font-bold text-white mb-2">All Clear</div>
-                        <div className="text-slate-400 text-sm">No active alerts — all chambers within safe limits</div>
-                    </div>
+                    <EmptyState
+                        icon="check_circle"
+                        title="All Clear"
+                        subtitle="No active alerts — all chambers are within safe environmental limits."
+                    />
                 )}
 
                 {/* Timeline */}

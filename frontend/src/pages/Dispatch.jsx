@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getWeather, getDispatch } from '../api/client'
+import { LoadingSkeleton, EmptyState } from '../components/UXStates'
 
 function Icon({ name, className = '' }) {
     return <span className={`material-symbols-outlined ${className}`}>{name}</span>
@@ -164,10 +165,14 @@ export default function Dispatch() {
                         </div>
                     </div>
 
-                    {recs.length === 0 && !loading && (
-                        <div className="text-center p-12 rounded-xl border border-slate-700 text-slate-500" style={{ background: '#162e26' }}>
-                            Start backend to load dispatch recommendations
-                        </div>
+                    {loading && <LoadingSkeleton count={3} variant="card" />}
+
+                    {!loading && recs.length === 0 && (
+                        <EmptyState
+                            icon="local_shipping"
+                            title="No Dispatch Recommendations"
+                            subtitle="Start the backend server to load live dispatch recommendations based on inventory and weather data."
+                        />
                     )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

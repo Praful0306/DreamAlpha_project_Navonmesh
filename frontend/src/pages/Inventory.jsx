@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getInventory, addBatch } from '../api/client'
+import { LoadingSkeleton, EmptyState } from '../components/UXStates'
 
 const CROPS = ['Tomatoes', 'Potatoes', 'Onions', 'Rice', 'Wheat', 'Mangoes', 'Bananas']
 
@@ -146,11 +147,19 @@ export default function Inventory() {
                             </div>
                         </div>
                         {loading ? (
-                            <div className="flex justify-center items-center p-12 gap-3 text-slate-500">
-                                <div className="spinner" /><span>Loading inventory...</span>
+                            <div className="p-6">
+                                <LoadingSkeleton count={4} variant="row" />
                             </div>
                         ) : filtered.length === 0 ? (
-                            <div className="text-center p-16 text-slate-600">No batches found</div>
+                            <EmptyState
+                                icon="inventory_2"
+                                title={filter === 'All' ? 'No Batches Yet' : `No ${filter} Batches`}
+                                subtitle={filter === 'All'
+                                    ? 'Add your first produce batch to start tracking inventory risk.'
+                                    : `There are currently no batches with ${filter.toLowerCase()} risk status.`
+                                }
+                                action={filter === 'All' ? { label: 'Add First Batch', onClick: () => setShowForm(true) } : undefined}
+                            />
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">

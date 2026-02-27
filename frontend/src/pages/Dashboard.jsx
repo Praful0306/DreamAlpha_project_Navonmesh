@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import ChamberCard from '../components/ChamberCard'
 import SensorChart from '../components/SensorChart'
+import { ErrorBanner, LoadingSkeleton } from '../components/UXStates'
 import { getChambers, simulateSensor } from '../api/client'
 
 export default function Dashboard() {
@@ -75,9 +76,7 @@ export default function Dashboard() {
                 </div>
 
                 {error && (
-                    <div className="bg-rose-500/10 border border-rose-500/30 text-rose-500 p-4 rounded-xl mb-8 font-medium">
-                        {error}
-                    </div>
+                    <ErrorBanner message={error} onRetry={fetchChambers} />
                 )}
 
                 {/* Stats Grid */}
