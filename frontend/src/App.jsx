@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext'
 import NavigationBar from './components/NavigationBar'
 import Landing from './pages/Landing'
@@ -14,8 +14,8 @@ import Settings from './pages/Settings'
 
 // Wrapper to hide NavigationBar on the Landing Page
 function AppLayout() {
-  const location = window.location.pathname
-  const isLanding = location === '/'
+  const location = useLocation()
+  const isLanding = location.pathname === '/'
 
   return (
     <>
