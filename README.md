@@ -1,287 +1,104 @@
-# 🌾 AgriStoreSmart — Smart Warehouse Intelligence for Indian Farmers
+# 🚀 Elite AgriStoreSmart
 
-> **Navomesh 2026 Hackathon | Problem Statement: 26010**
-> *Real-Time Monitoring · Spoilage Prevention · Dispatch Intelligence*
-
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-18-blue.svg)](https://reactjs.org)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Elite AgriStoreSmart** is a multi-million-dollar agritech logistics and inventory management platform designed to track real-time crop health, optimize dispatch routing, and predict spoilage events. The platform features a hyper-premium glassmorphism UI/UX with a high-performance Python FastAPI backend.
 
 ---
 
-## 🚨 The Problem
+## ✨ Key Features
 
-**India loses ₹1.53 Lakh Crore worth of food every year after harvest.**
-
-- **86%** of Indian farmers are small-holders storing 2–20 tonnes
-- **85%** of warehouses have **zero monitoring systems**
-- **30–35%** of fruits and vegetables are lost post-harvest
-- Farmers like Ram Singh have no idea when temperature spikes — by the time they find out, half their produce is gone
-
-> *"India's warehouses are blind. Farmers pay the price."*
+1. **Dashboard & Environmental Monitoring:** Real-time visibility into chamber conditions (Temp, Humidity, Ethylene) with a live-sync pulse UI.
+2. **Diagnostic Command Center (Alerts):** Split-pane "Mission Control" design. Real-time timeline of critical and warning events, with optimistic UI resolution and custom rule management.
+3. **Advanced Dispatch Planner:** Logistics engine calculating the nearest Mandi, estimated value, and days remaining to dispatch before spoilage. Includes an interactive Dispatch Configuration Modal and Manifest generation options.
+4. **Smart Inventory Management:** Tracks batches with explicit Storage Start and auto-calculated Expiry Dates. Visual risk factor bars show urgency based on shelf life. Includes a premium Slide-over Drawer for adding batches.
+5. **Market & Weather Integration:** Live layout of nearby market opportunities and full weather forecasts (simulated) tuned for agricultural needs.
+6. **Dark/Light Themes:** Built from the ground up for deep slate Glassmorphism (Dark) and crisp, high-contrast layouts (Light).
 
 ---
 
-## 💡 Our Solution
+## 📸 Screenshots
 
-**AgriStoreSmart** is a web-based Smart Warehouse Intelligence System that gives every farmer the power of a modern cold-chain facility — with **zero hardware investment**.
+### 1. Environmental Dashboard
+![Dashboard](file:///C:/Users/ASUS/.gemini/antigravity/brain/eea36bd9-962b-4c6e-836b-1bae0fc27b7f/dashboard_dark_mode_1772199155424.png)
 
-### 🔑 Key Features
+### 2. Diagnostic Command Center (Alerts)
+![Alerts Command Center](file:///C:/Users/ASUS/.gemini/antigravity/brain/eea36bd9-962b-4c6e-836b-1bae0fc27b7f/alerts_dark_mode_1772208718041.png)
 
-| # | Feature | Description | Status |
-|---|---|---|---|
-| 1 | 🌡️ **Environmental Dashboard** | Real-time temp & humidity monitoring per chamber | ✅ Must Build |
-| 2 | 📦 **Batch Inventory Manager** | Track produce with crop type, quantity, risk scores | ✅ Must Build |
-| 3 | 🚨 **Spoilage Alert Center** | Color-coded alerts with recommended actions | ✅ Must Build |
-| 4 | 🚛 **Dispatch Planner** | Weather-aware sell recommendations + nearest market | ⭐ WOW Factor |
+### 3. Inventory Risk Management
+![Inventory Tracking](file:///C:/Users/ASUS/.gemini/antigravity/brain/eea36bd9-962b-4c6e-836b-1bae0fc27b7f/inventory_table_main_1772208124265.png)
 
----
-
-## 🏗️ Architecture
-
-```
-                    ┌─────────────────┐
-                    │   React 18 SPA  │
-                    │   (Port 3000)   │
-                    └────────┬────────┘
-                             │ Axios HTTP
-                    ┌────────▼────────┐
-                    │    FastAPI      │
-                    │   (Port 8000)   │
-                    └───┬────────┬────┘
-                        │        │
-               ┌────────▼──┐ ┌───▼───────────────┐
-               │  SQLite   │ │  OpenWeatherMap   │
-               │  Database │ │  (Free API)       │
-               └───────────┘ └───────────────────┘
-```
-
-### Tech Stack
-
-| Layer | Technology | Why |
-|---|---|---|
-| Frontend | React 18 + TailwindCSS | Fast SPA with responsive design |
-| Backend | FastAPI + Uvicorn | Async REST API with auto-docs |
-| Database | SQLite | Zero-config, file-based, portable |
-| Charts | Recharts | Beautiful temperature history graphs |
-| Weather | OpenWeatherMap API | Free real-time weather data |
-| Routing | React Router DOM 6 | Client-side navigation |
+### 4. Smart Dispatch Recommendations
+![Dispatch Hub](file:///C:/Users/ASUS/.gemini/antigravity/brain/eea36bd9-962b-4c6e-836b-1bae0fc27b7f/dispatch_page_main_1772208082185.png)
 
 ---
 
-## 🚀 Quick Start
+## 🛠️ Tech Stack
+
+- **Frontend:** React 18, Vite, TailwindCSS v4, Recharts, Context API.
+- **Backend:** Python 3.12, FastAPI, Pydantic, SQLite (via `sqlite3`), Uvicorn.
+- **Tooling:** `uv` (fast Python package manager), npm.
+
+---
+
+## 🚀 Setup Instructions
 
 ### Prerequisites
+Make sure you have Node.js (`npm`) and `uv` installed.
 
-- **Python 3.11+** — [Download](https://python.org)
-- **Node.js 18+** — [Download](https://nodejs.org)
-- **Git** — [Download](https://git-scm.com)
+### 1. Backend Setup (FastAPI)
 
-### 1. Clone the Repository
+1. Navigate to the project root.
+2. Sync the Python dependencies using `uv`:
+   ```bash
+   uv sync
+   ```
+3. Start the FastAPI server on port 8000:
+   ```bash
+   uv run --no-project python -m uvicorn backend.main:app --reload --port 8000
+   ```
+   > The API will be available at `http://localhost:8000`. The database `agristore.db` is automatically seeded on startup if it doesn't exist.
 
-```bash
-git clone https://github.com/yourusername/agristoresmart.git
-cd agristoresmart
-```
+### 2. Frontend Setup (React/Vite)
 
-### 2. Setup Backend
+1. Open a new terminal and navigate to the `frontend` directory:
+   ```bash
+   cd frontend
+   ```
+2. Install the necessary Node packages (if not already done):
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+   > The app will be available at `http://localhost:3000`. It automatically proxies `/api` calls to `http://localhost:8000`.
 
-```bash
-# Navigate to backend
-cd backend
-
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Create .env file (add your OpenWeatherMap API key)
-echo "WEATHER_API_KEY=your_api_key_here" > .env
-
-# Seed the database with demo data
-python seed_data.py
-
-# Start the backend server
-uvicorn main:app --reload --port 8000
-```
-
-✅ Verify: Open [http://localhost:8000/docs](http://localhost:8000/docs) → You should see FastAPI Swagger UI
-
-### 3. Setup Frontend
-
-```bash
-# Navigate to frontend (from project root)
-cd frontend
-
-# Install Node.js dependencies
-npm install
-
-# Start the React development server
-npm start
-```
-
-✅ Verify: Open [http://localhost:3000](http://localhost:3000) → You should see the AgriStoreSmart dashboard
-
-### 4. Run Sensor Simulator (Optional)
-
-```bash
-# In a new terminal, from backend directory
-python simulator.py
-```
-
-This sends fake sensor readings every 8 seconds, cycling through SAFE → WARNING → CRITICAL states.
+### 3. Running Demo Mode
+Once both the backend and frontend are running, click the **"Activate Demo Stream"** button on the Dashboard. This triggers the backend simulator to inject fluctuating sensor data every 8 seconds, creating realistic SAFE ➡️ WARNING ➡️ CRITICAL cycles across the chambers and generating live alerts.
 
 ---
 
-## 📁 Project Structure
+## 📂 Project Structure
 
-```
-agristoresmart/
+```text
 ├── backend/
-│   ├── main.py                  # FastAPI app entry point
-│   ├── database.py              # SQLite connection + table creation
-│   ├── models.py                # Pydantic request/response schemas
-│   ├── routers/
-│   │   ├── sensors.py           # Sensor reading endpoints
-│   │   ├── inventory.py         # Batch management endpoints
-│   │   ├── alerts.py            # Alert endpoints
-│   │   ├── weather.py           # OpenWeatherMap integration
-│   │   └── dispatch.py          # Dispatch recommendation engine
-│   ├── seed_data.py             # Demo data population script
-│   ├── simulator.py             # Fake sensor data generator
-│   └── .env                     # API keys (gitignored)
-│
-├── frontend/
-│   ├── src/
-│   │   ├── App.jsx              # Root component + routing
-│   │   ├── api/client.js        # All API call functions
-│   │   ├── pages/               # Dashboard, Inventory, Alerts, Dispatch
-│   │   └── components/          # ChamberCard, BatchTable, AlertBadge, etc.
-│   └── package.json
-│
-├── requirements.txt             # Python dependencies
-├── pyproject.toml               # UV package configuration
-├── design.md                    # System design document
-├── README.md                    # This file
-└── .gitignore                   # Exclude node_modules, .env, __pycache__
+│   ├── database.py       # SQLite connection and schema
+│   ├── main.py           # FastAPI entrypoint and CORS
+│   ├── models.py         # Pydantic schemas for data validation
+│   ├── seed_data.py      # Initial mock data for testing
+│   ├── simulator.py      # Background IoT sensor simulation logic
+│   └── routers/          # Modular API endpoints (alerts, dispatch, inventory, sensors)
+└── frontend/
+    ├── src/
+    │   ├── api/          # Axios client (client.js)
+    │   ├── components/   # Reusable UI (NavBar, UXStates, ChamberCards)
+    │   ├── context/      # ThemeContext for Dark/Light mode
+    │   ├── pages/        # Main route views (Dashboard, Alerts, Dispatch, etc.)
+    │   ├── App.jsx       # React Router layout
+    │   └── index.css     # Global Tailwind mesh gradients and scrollbars
+    ├── package.json
+    └── vite.config.js    # Proxy configuration to backend
 ```
 
 ---
-
-## 🔌 API Endpoints
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/sensors/reading` | Submit a sensor reading |
-| `POST` | `/api/sensors/simulate` | Trigger demo simulation |
-| `GET` | `/api/chambers` | Get all chambers with status |
-| `GET` | `/api/inventory` | List all produce batches |
-| `POST` | `/api/inventory/batch` | Add a new batch |
-| `GET` | `/api/alerts` | Get unresolved alerts |
-| `POST` | `/api/alerts/{id}/resolve` | Resolve an alert |
-| `GET` | `/api/weather?city=Pune` | Get current weather |
-| `GET` | `/api/dispatch/recommend` | Get dispatch recommendations |
-| `GET` | `/docs` | Swagger API documentation |
-
----
-
-## 🎨 Color Coding System
-
-The entire UI is built around **three colors** so even illiterate farmers can understand:
-
-| Color | Status | Meaning |
-|---|---|---|
-| 🟢 **Green** | `SAFE` | All readings within safe range — no action needed |
-| 🟡 **Orange** | `WARNING` | Approaching threshold — check soon |
-| 🔴 **Red** | `CRITICAL` | Out of range — act immediately |
-
----
-
-## 🗄️ Database Schema
-
-**5 tables** in SQLite (`agristoresmart.db`):
-
-| Table | Purpose | Key Fields |
-|---|---|---|
-| `chambers` | Storage chambers | name, location, crop_stored, capacity |
-| `sensor_readings` | Time-series data | chamber_id, temperature, humidity, timestamp |
-| `crop_thresholds` | Safe ranges per crop | min/max_temp, min/max_humidity, max_days |
-| `batches` | Inventory tracking | crop, quantity, farmer, risk_score, status |
-| `alerts` | Spoilage notifications | severity, message, recommended_action, resolved |
-
----
-
-## 🎯 Demo Flow (3 minutes)
-
-Follow this **exact sequence** during the hackathon demo:
-
-1. **Dashboard** → Show 4 chamber cards with live GREEN status
-2. **Trigger Warning** → Click demo control → A card turns ORANGE
-3. **Trigger Critical** → Click again → Card turns RED + alert badge appears
-4. **Inventory** → Show 5 batches with risk color coding → Add a new batch via form
-5. **Alerts** → Navigate → See active alert with recommended action → Click "Resolve"
-6. **Dispatch** → Show weather panel → Show at-risk batches with "Sell at Pune Mandi" recommendation
-
-> ⚠️ If internet fails during demo, play the 2-minute backup screen recording.
-
----
-
-## 🏆 Impact
-
-| Metric | Value |
-|---|---|
-| **Spoilage Reduction** | 35% |
-| **Storage Cost Savings** | 25% |
-| **Savings per warehouse** | ₹50,000 per 100-tonne warehouse per season |
-| **At 1,000 warehouses** | ₹500 Crore saved in losses yearly |
-
----
-
-## 🗺️ Future Roadmap
-
-| Phase | Timeline | Feature |
-|---|---|---|
-| **Phase 1** | 1 month | Connect real IoT sensors (₹600/kit) |
-| **Phase 2** | 3 months | WhatsApp alerts + regional languages |
-| **Phase 3** | 6 months | Marketplace + warehouse receipt financing |
-| **Phase 4** | 1 year | Pan-India FPO network + AI price prediction |
-
----
-
-## 📋 Pre-Hackathon Checklist
-
-- [ ] GitHub account created + repo named `agristoresmart` (PUBLIC)
-- [ ] OpenWeatherMap free API key obtained
-- [ ] Python 3.11+ installed and verified (`python --version`)
-- [ ] Node.js 18+ installed and verified (`node --version`)
-- [ ] Git installed and verified (`git --version`)
-- [ ] VS Code installed
-- [ ] Python packages pre-installed: `pip install fastapi uvicorn python-dotenv requests pydantic httpx`
-- [ ] React test app created and verified: `npx create-react-app test-app`
-- [ ] This document saved to Google Drive as backup
-
----
-
-## 🎤 Elevator Pitch (30 seconds)
-
-> *"Every year, India loses ₹1.5 lakh crore of food after harvest — enough to feed Bihar for an entire year. Why? Because 85% of warehouses have no monitoring system. Small farmers like Ram Singh have no idea when temperature spikes. By the time they find out, half their produce is gone. We built AgriStoreSmart: a dashboard that shows real-time temperature and humidity for every storage chamber, tracks all inventory with spoilage risk scores, and gives farmers clear action alerts before it is too late. Zero hardware needed. Works on any phone. Built in 24 hours. We help farmers save their harvest and their income."*
-
----
-
-## 🤝 Team
-
-| Role | Name |
-|---|---|
-| Full-Stack Development | _Your Name_ |
-| UI/UX & Presentation | _Team Member_ |
-
----
-
-## 📄 License
-
-This project is built for the **Navomesh 2026 Hackathon** (Problem 26010).
-
----
-
-*"From Farm to Market — Nothing Lost in Between"*
-
-**AgriStoreSmart** · Navomesh 2026 · Problem 26010
+*Developed by Navomesh 2026 | Problem 26010*
