@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="AgriStoreSmart - Smart Warehouse Intelligence System for Indian Farmers. Real-time monitoring, spoilage alerts, and dispatch planning." />
+  <title>AgriStoreSmart | Smart Warehouse Intelligence</title>
+
+  <!-- Google Fonts: Inter + Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+
+  <!-- TailwindCSS Play CDN (no install needed) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            "primary": "#10b77f",
+            "primary-dark": "#059669",
+            "background-light": "#f6f8f7",
+            "background-dark": "#10221c",
+            "obsidian": "#0f172a",
+            "surface-dark": "#162e26",
+            "surface-darker": "#11241e",
+            "border-dark": "#28453b",
+            "card-dark": "#182c25",
+            "surface-glass": "rgba(255, 255, 255, 0.03)",
+            "surface-border": "rgba(255, 255, 255, 0.08)",
+            "status-safe": "#10b77f",
+            "status-warning": "#f59e0b",
+            "status-critical": "#f43f5e",
+            "rose-alert": "#e11d48",
+            "amber-alert": "#f59e0b",
+            "blue-alert": "#3b82f6",
+            safe: { DEFAULT: '#10b77f', light: '#bbf7d0', dark: '#166534' },
+            warning: { DEFAULT: '#f59e0b', light: '#fed7aa', dark: '#9a3412' },
+            critical: { DEFAULT: '#e11d48', light: '#fecaca', dark: '#991b1b' },
+          },
+          backgroundImage: {
+            'gradient-mesh': 'radial-gradient(circle at 15% 50%, rgba(16, 183, 127, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(16, 183, 127, 0.05), transparent 25%)',
+            'mesh-gradient': 'radial-gradient(circle at 50% 0%, rgba(16, 183, 127, 0.15) 0%, rgba(15, 23, 42, 0) 50%)',
+            'glow-emerald': 'radial-gradient(circle at center, rgba(16, 183, 127, 0.4) 0%, transparent 70%)',
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'fade-in': 'fadeIn 0.3s ease-in-out',
+            'slide-up': 'slideUp 0.3s ease-out',
+          },
+          keyframes: {
+            fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+            slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Custom scrollbar for modern feel */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #10221c;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #28453b;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #10b77f;
+    }
+
+    .glass-card {
+      background: rgba(24, 44, 37, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pulse-border {
+      box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+      animation: pulse-red 2s infinite;
+    }
+
+    @keyframes pulse-red {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7);
+      }
+
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(225, 29, 72, 0);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(225, 29, 72, 0);
+      }
+    }
+  </style>
+</head>
+
+<body
+  class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-primary selection:text-white">
+  <div id="root" class="flex h-screen w-full flex-col overflow-hidden"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
