@@ -34,15 +34,26 @@ export default function Inventory() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!form.quantity_kg || !form.farmer_name) { setFormMsg('All fields required'); return }
+        if (!form.quantity_kg || !form.farmer_name) { setFormMsg('⚠ All fields required'); return }
+        if (parseFloat(form.quantity_kg) <= 0) { setFormMsg('⚠ Quantity must be greater than 0'); return }
         setSubmitting(true)
+        setFormMsg('')
         try {
             await addBatch({ ...form, quantity_kg: parseFloat(form.quantity_kg), chamber_id: parseInt(form.chamber_id) })
-            setFormMsg('Batch saved!')
+            setFormMsg('✅ Batch saved!')
             setForm({ crop_name: 'Tomatoes', quantity_kg: '', farmer_name: '', chamber_id: '1' })
             await fetchData()
-            setTimeout(() => { setShowForm(false); setFormMsg('') }, 1200)
-        } catch { setFormMsg('Failed to save batch') }
+            setTimeout(() => { setShowForm(false); setFormMsg('') }, 1500)
+        } catch (err) {
+            const detail = err?.response?.data?.detail
+            if (err?.code === 'ERR_NETWORK' || err?.message?.includes('Network')) {
+                setFormMsg('❌ Cannot reach backend — start uvicorn on port 8000')
+            } else if (detail) {
+                setFormMsg(`❌ ${detail}`)
+            } else {
+                setFormMsg('❌ Failed to save batch — check backend is running')
+            }
+        }
         setSubmitting(false)
     }
 
@@ -197,71 +208,127 @@ export default function Inventory() {
                 </div>
             </div>
 
-            {/* Slide-over Panel */}
+            {/* ── Add Batch Form — desktop side panel + mobile bottom sheet ── */}
             {showForm && (
-                <div className="hidden lg:flex w-96 border-l border-slate-800 bg-slate-900 flex-col shadow-2xl relative z-10">
-                    <div className="p-6 border-b border-slate-700">
-                        <div className="flex items-center justify-between mb-2">
-                            <h2 className="text-xl font-bold text-white">Add New Batch</h2>
-                            <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" /></button>
+                <>
+                    {/* Mobile: fixed bottom sheet */}
+                    <div className="lg:hidden fixed inset-x-0 bottom-0 z-50 bg-slate-900 border-t border-slate-700 rounded-t-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+                        <div className="p-5 border-b border-slate-700">
+                            <div className="w-10 h-1 rounded-full bg-slate-600 mx-auto mb-4" />
+                            <div className="flex items-center justify-between">
+                                <h2 className="text-lg font-bold text-white">Add New Batch</h2>
+                                <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-white"><Icon name="close" /></button>
+                            </div>
                         </div>
-                        <p className="text-sm text-slate-400">Enter inventory details for tracking.</p>
-                    </div>
-                    <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5 flex flex-col">
-                        <div className="flex-1 space-y-5">
+                        <form onSubmit={handleSubmit} className="p-5 space-y-4">
                             <div>
-                                <label className="text-sm font-medium text-slate-300 block mb-2">Farmer Name</label>
-                                <div className="relative">
-                                    <Icon name="person" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
-                                    <input type="text" placeholder="e.g. Ram Singh" value={form.farmer_name}
-                                        onChange={e => setForm(p => ({ ...p, farmer_name: e.target.value }))}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none transition-colors" />
-                                </div>
+                                <label className="text-sm font-medium text-slate-300 block mb-1.5">Farmer Name</label>
+                                <input type="text" placeholder="e.g. Ram Singh" value={form.farmer_name}
+                                    onChange={e => setForm(p => ({ ...p, farmer_name: e.target.value }))}
+                                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none" />
                             </div>
                             <div>
-                                <label className="text-sm font-medium text-slate-300 block mb-2">Crop Type</label>
-                                <div className="relative">
-                                    <Icon name="grass" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
-                                    <select value={form.crop_name} onChange={e => setForm(p => ({ ...p, crop_name: e.target.value }))}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
-                                        {CROPS.map(c => <option key={c}>{c}</option>)}
-                                    </select>
-                                </div>
+                                <label className="text-sm font-medium text-slate-300 block mb-1.5">Crop Type</label>
+                                <select value={form.crop_name} onChange={e => setForm(p => ({ ...p, crop_name: e.target.value }))}
+                                    className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
+                                    {CROPS.map(c => <option key={c}>{c}</option>)}
+                                </select>
                             </div>
-                            <div>
-                                <label className="text-sm font-medium text-slate-300 block mb-2">Quantity (kg)</label>
-                                <div className="relative">
-                                    <Icon name="scale" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-1.5">Quantity (kg)</label>
                                     <input type="number" placeholder="0" value={form.quantity_kg}
                                         onChange={e => setForm(p => ({ ...p, quantity_kg: e.target.value }))}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none transition-colors" />
+                                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none" />
                                 </div>
-                            </div>
-                            <div>
-                                <label className="text-sm font-medium text-slate-300 block mb-2">Chamber</label>
-                                <div className="relative">
-                                    <Icon name="warehouse" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-1.5">Chamber</label>
                                     <select value={form.chamber_id} onChange={e => setForm(p => ({ ...p, chamber_id: e.target.value }))}
-                                        className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
+                                        className="w-full px-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
                                         {[1, 2, 3, 4].map(i => <option key={i} value={i}>Chamber {['A', 'B', 'C', 'D'][i - 1]}</option>)}
                                     </select>
                                 </div>
                             </div>
+                            <div className="flex gap-3 pt-2">
+                                <button type="button" onClick={() => setShowForm(false)}
+                                    className="flex-1 px-4 py-3 rounded-lg border border-slate-600 text-slate-300 font-medium text-sm hover:bg-slate-800 transition-colors">Cancel</button>
+                                <button type="submit" disabled={submitting}
+                                    className="flex-1 px-4 py-3 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm shadow-lg shadow-emerald-500/25 transition-colors">
+                                    {submitting ? 'Saving...' : 'Save Batch'}
+                                </button>
+                            </div>
+                            {formMsg && <p className={`text-sm text-center ${formMsg.includes('saved') ? 'text-emerald-400' : 'text-rose-400'}`}>{formMsg}</p>}
+                        </form>
+                    </div>
+                    {/* Mobile overlay */}
+                    <div className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm" onClick={() => setShowForm(false)} />
+
+                    {/* Desktop: right side panel */}
+                    <div className="hidden lg:flex w-96 border-l border-white/10 bg-white/5 dark:bg-surface-darker flex-col shadow-2xl absolute right-0 top-0 bottom-0 z-20 backdrop-blur-xl">
+                        <div className="p-6 border-b border-slate-700">
+                            <div className="flex items-center justify-between mb-2">
+                                <h2 className="text-xl font-bold text-white">Add New Batch</h2>
+                                <button onClick={() => setShowForm(false)} className="text-slate-400 hover:text-slate-200"><Icon name="close" /></button>
+                            </div>
+                            <p className="text-sm text-slate-400">Enter inventory details for tracking.</p>
                         </div>
-                        <div className="pt-4 border-t border-slate-700 flex gap-3 items-center">
-                            <button type="button" onClick={() => setShowForm(false)}
-                                className="flex-1 px-4 py-2.5 rounded-lg border border-slate-600 text-slate-300 font-medium text-sm hover:bg-slate-800 transition-colors">
-                                Cancel
-                            </button>
-                            <button type="submit" disabled={submitting}
-                                className="flex-1 px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm shadow-lg shadow-emerald-500/25 transition-colors">
-                                {submitting ? 'Saving...' : 'Save Batch'}
-                            </button>
-                        </div>
-                        {formMsg && <p className={`text-sm text-center ${formMsg.includes('saved') ? 'text-emerald-400' : 'text-rose-400'}`}>{formMsg}</p>}
-                    </form>
-                </div>
+                        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-5 flex flex-col">
+                            <div className="flex-1 space-y-5">
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-2">Farmer Name</label>
+                                    <div className="relative">
+                                        <Icon name="person" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                                        <input type="text" placeholder="e.g. Ram Singh" value={form.farmer_name}
+                                            onChange={e => setForm(p => ({ ...p, farmer_name: e.target.value }))}
+                                            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none transition-colors" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-2">Crop Type</label>
+                                    <div className="relative">
+                                        <Icon name="grass" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                                        <select value={form.crop_name} onChange={e => setForm(p => ({ ...p, crop_name: e.target.value }))}
+                                            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
+                                            {CROPS.map(c => <option key={c}>{c}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-2">Quantity (kg)</label>
+                                    <div className="relative">
+                                        <Icon name="scale" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                                        <input type="number" placeholder="0" value={form.quantity_kg}
+                                            onChange={e => setForm(p => ({ ...p, quantity_kg: e.target.value }))}
+                                            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white placeholder:text-slate-500 focus:border-emerald-500 outline-none transition-colors" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="text-sm font-medium text-slate-300 block mb-2">Chamber</label>
+                                    <div className="relative">
+                                        <Icon name="warehouse" className="absolute left-3 top-2.5 text-slate-400 text-xl" />
+                                        <select value={form.chamber_id} onChange={e => setForm(p => ({ ...p, chamber_id: e.target.value }))}
+                                            className="w-full pl-10 pr-4 py-2.5 bg-slate-800 border border-slate-600 rounded-lg text-sm text-white appearance-none focus:border-emerald-500 outline-none">
+                                            {[1, 2, 3, 4].map(i => <option key={i} value={i}>Chamber {['A', 'B', 'C', 'D'][i - 1]}</option>)}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="pt-4 border-t border-slate-700 flex gap-3 items-center">
+                                <button type="button" onClick={() => setShowForm(false)}
+                                    className="flex-1 px-4 py-2.5 rounded-lg border border-slate-600 text-slate-300 font-medium text-sm hover:bg-slate-800 transition-colors">
+                                    Cancel
+                                </button>
+                                <button type="submit" disabled={submitting}
+                                    className="flex-1 px-4 py-2.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white font-medium text-sm shadow-lg shadow-emerald-500/25 transition-colors">
+                                    {submitting ? 'Saving...' : 'Save Batch'}
+                                </button>
+                            </div>
+                            {formMsg && <p className={`text-sm text-center ${formMsg.includes('saved') ? 'text-emerald-400' : 'text-rose-400'}`}>{formMsg}</p>}
+                        </form>
+                    </div>
+                </>
             )}
         </div>
     )
 }
+

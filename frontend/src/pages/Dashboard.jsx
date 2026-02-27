@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import ChamberCard from '../components/ChamberCard'
+import SensorChart from '../components/SensorChart'
 import { getChambers, simulateSensor } from '../api/client'
 
 export default function Dashboard() {
@@ -43,7 +44,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex-1 overflow-y-auto relative z-10">
-            <main className="flex-1 pt-12 pb-32 px-6 lg:px-12 max-w-[1600px] mx-auto w-full relative z-10">
+            <main className="flex-1 pt-6 md:pt-10 pb-32 px-4 md:px-6 lg:px-12 max-w-[1600px] mx-auto w-full relative z-10">
 
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-10">
@@ -80,7 +81,7 @@ export default function Dashboard() {
                 )}
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8 md:mb-10">
                     {/* Stat Card 1 */}
                     <div className="bg-white/50 dark:bg-surface-glass backdrop-blur-[20px] rounded-xl p-5 border border-slate-200 dark:border-surface-border shadow-sm relative overflow-hidden group">
                         <div className="absolute -right-6 -top-6 bg-primary/20 w-24 h-24 rounded-full blur-2xl group-hover:bg-primary/30 transition-all"></div>
@@ -190,6 +191,35 @@ export default function Dashboard() {
                         <span className="font-medium">Connect Chamber</span>
                         <span className="text-xs mt-1">Configure new sensor array</span>
                     </button>
+                </div>
+
+                {/* Historical Sensor Trends — always visible, charts show placeholder when offline */}
+                <div className="mt-12">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 className="text-xl font-bold text-white">Historical Sensor Trends</h3>
+                            <p className="text-sm text-slate-400 mt-1">Last 20 readings per chamber — auto-refreshes every 10s</p>
+                        </div>
+                        <span className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                            Live Polling
+                        </span>
+                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {(chambers.length > 0 ? chambers : [
+                            { id: 1, name: 'Chamber A', status: 'SAFE' },
+                            { id: 2, name: 'Chamber B', status: 'WARNING' },
+                            { id: 3, name: 'Chamber C', status: 'SAFE' },
+                            { id: 4, name: 'Chamber D', status: 'CRITICAL' },
+                        ]).map(ch => (
+                            <SensorChart
+                                key={ch.id}
+                                chamberId={ch.id}
+                                chamberName={ch.name}
+                                status={ch.status}
+                            />
+                        ))}
+                    </div>
                 </div>
             </main>
 
