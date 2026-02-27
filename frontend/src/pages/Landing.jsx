@@ -261,7 +261,7 @@ export default function Landing() {
             </section>
 
             {/* AgriTech Modernization Section */}
-            <section id="technology" className="relative z-10 py-32 px-6 border-t border-white/5 bg-slate-900/40 overflow-hidden scroll-mt-24">
+            <section id="technology" className="relative z-10 py-32 px-6 border-t border-white/5 bg-slate-900/40 scroll-mt-24">
                 <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
                 <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
                     <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
@@ -305,7 +305,7 @@ export default function Landing() {
                     </div>
 
                     {/* Visual Graphic Representation */}
-                    <div className="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-[500px] h-full">
+                    <div className="w-full lg:w-1/2 relative min-h-[400px] lg:min-h-[500px] flex-grow">
                         <div className="absolute inset-0 bg-gradient-to-tr from-slate-800 to-slate-900 rounded-3xl border border-slate-700 p-6 md:p-8 shadow-2xl flex flex-col justify-between overflow-hidden">
                             {/* Decorative Grid */}
                             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 mix-blend-overlay pointer-events-none"></div>
