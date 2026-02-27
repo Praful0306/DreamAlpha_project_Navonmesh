@@ -122,7 +122,7 @@ export default function Landing() {
             </main>
 
             {/* The Problem Section */}
-            <section id="problem" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950/40">
+            <section id="problem" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950/40 scroll-mt-24">
                 <div className="max-w-7xl mx-auto">
                     <div className="text-center mb-16">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-rose-500/20 text-rose-500 mb-6 border border-rose-500/30">
@@ -195,7 +195,7 @@ export default function Landing() {
             </section>
 
             {/* The Solution Section */}
-            <section id="solution" className="relative z-10 py-24 px-6 bg-slate-900/60">
+            <section id="solution" className="relative z-10 py-24 px-6 bg-slate-900/60 scroll-mt-24">
                 <div className="max-w-7xl mx-auto text-center">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mb-6 border border-emerald-500/30 relative">
                         <span className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></span>
@@ -209,7 +209,7 @@ export default function Landing() {
             </section>
 
             {/* Platform Features Section (Refined 2x2 Grid) */}
-            <section id="features" className="relative z-10 pb-24 px-6 bg-slate-900/60">
+            <section id="features" className="relative z-10 pb-24 px-6 bg-slate-900/60 scroll-mt-24">
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Feature 1 */}
@@ -261,7 +261,7 @@ export default function Landing() {
             </section>
 
             {/* AgriTech Modernization Section */}
-            <section id="technology" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/40 overflow-hidden">
+            <section id="technology" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-900/40 overflow-hidden scroll-mt-24">
                 <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
                     <div className="w-full md:w-1/2">
@@ -269,7 +269,7 @@ export default function Landing() {
                             <span className="material-symbols-outlined text-[16px] text-emerald-400">architecture</span>
                             Next-Gen Agriculture
                         </div>
-                        <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Bringing Warehouses into the Modern Era</h2>
+                        <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">AgriTech Infrastructure & Modernization</h2>
                         <p className="text-slate-400 text-lg leading-relaxed mb-8">
                             Solving a national food crisis requires infrastructure that scales beyond manual clipboards and guesswork. We utilize the latest advancements in agricultural technology to digitize the entire storage lifecycle.
                         </p>
@@ -352,7 +352,7 @@ export default function Landing() {
             </section>
 
             {/* Redesigned Contact / Inquiry Form */}
-            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950">
+            <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950 scroll-mt-24">
                 <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
                     {/* Text Column */}
                     <div className="w-full lg:w-5/12">
