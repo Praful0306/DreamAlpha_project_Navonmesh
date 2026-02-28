@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize the Gemini API
-const API_KEY = 'AIzaSyCRQLCcaFMP9LAxDnkWRJZfmCrzireMfd0';
+const API_KEY = 'AIzaSyDG8rZGpHOuas17I1jgkPEiqwMcBAt3Hss';
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 export default function Chatbot() {
