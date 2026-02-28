@@ -11,7 +11,6 @@ import Weather from './pages/Weather'
 import Market from './pages/Market'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
-import CustomCursor from './components/CustomCursor'
 import Chatbot from './components/Chatbot'
 
 // Wrapper to hide NavigationBar on the Landing Page
@@ -21,7 +20,6 @@ function AppLayout() {
 
   return (
     <>
-      <CustomCursor />
       <Chatbot />
       {!isLanding && <NavigationBar />}
 

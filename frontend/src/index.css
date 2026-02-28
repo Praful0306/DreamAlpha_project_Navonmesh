@@ -252,53 +252,8 @@ body.light .card {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
-/* 2. Custom Lag-Ring Cursor */
-.custom-cursor-dot {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background-color: #EAB308;
-  /* Gold primary */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-}
-
-.custom-cursor-ring {
-  position: fixed;
-  width: 32px;
-  height: 32px;
-  border: 1px solid rgba(234, 179, 8, 0.4);
-  /* Gold ring */
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, background-color 0.2s;
-}
-
-/* Expand ring when hovering over clickable items (handled in JS/CSS or generic class) */
-.custom-cursor-ring.hovering {
-  width: 48px;
-  height: 48px;
-  background-color: rgba(234, 179, 8, 0.1);
-  border-color: rgba(234, 179, 8, 0.8);
-}
-
-/* Hide default cursor on desktop */
-@media (pointer: fine) {
-  body {
-    cursor: none;
-  }
-
-  a,
-  button,
-  input,
-  select,
-  textarea {
-    cursor: none;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 /* 3. Scroll Reveal Class */
