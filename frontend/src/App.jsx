@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
 import { ThemeProvider } from './context/ThemeContext'
 import NavigationBar from './components/NavigationBar'
 import Landing from './pages/Landing'
@@ -18,6 +19,20 @@ function AppLayout() {
   const location = useLocation()
   const isLanding = location.pathname === '/'
 
+  // Manage #root and body scrolling based on route
+  useEffect(() => {
+    const root = document.getElementById('root')
+    if (root) {
+      if (isLanding) {
+        root.classList.remove('h-screen', 'overflow-hidden')
+        root.classList.add('min-h-screen')
+      } else {
+        root.classList.add('h-screen', 'overflow-hidden')
+        root.classList.remove('min-h-screen')
+      }
+    }
+  }, [isLanding])
+
   return (
     <>
       <Chatbot />
@@ -33,7 +48,7 @@ function AppLayout() {
         </div>
       )}
 
-      <main className="flex-1 overflow-hidden relative w-full flex flex-col z-10">
+      <main className={`flex-1 relative w-full flex flex-col z-10 ${isLanding ? 'overflow-x-hidden' : 'overflow-hidden'}`}>
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/dashboard" element={<Dashboard />} />

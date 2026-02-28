@@ -124,7 +124,7 @@ export default function Landing() {
     }
 
     return (
-        <div className="min-h-screen bg-[#040D06] text-zinc-400 flex flex-col relative overflow-hidden scroll-smooth transition-colors duration-500 font-sans">
+        <div className="min-h-screen bg-[#040D06] text-zinc-400 flex flex-col relative overflow-x-hidden scroll-smooth transition-colors duration-500 font-sans">
 
             {/* Subtle Grid Overlay */}
             <div className="fixed inset-0 pointer-events-none z-0" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '50px 50px' }}></div>
