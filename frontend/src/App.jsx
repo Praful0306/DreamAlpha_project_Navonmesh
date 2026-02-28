@@ -11,6 +11,8 @@ import Weather from './pages/Weather'
 import Market from './pages/Market'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
+import CustomCursor from './components/CustomCursor'
+import Chatbot from './components/Chatbot'
 
 // Wrapper to hide NavigationBar on the Landing Page
 function AppLayout() {
@@ -19,6 +21,8 @@ function AppLayout() {
 
   return (
     <>
+      <CustomCursor />
+      <Chatbot />
       {!isLanding && <NavigationBar />}
 
       {/* Global Background Orbs - applied always but Landing page has its own solid bg to cover */}

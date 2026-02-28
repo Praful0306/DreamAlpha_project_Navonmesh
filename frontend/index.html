@@ -9,10 +9,11 @@
     content="AgriStoreSmart - Smart Warehouse Intelligence System for Indian Farmers. Real-time monitoring, spoilage alerts, and dispatch planning." />
   <title>AgriStoreSmart | Smart Warehouse Intelligence</title>
 
-  <!-- Google Fonts: Inter + Material Symbols -->
+  <!-- Google Fonts: Inter, Playfair Display + Material Symbols -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
     rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
     rel="stylesheet" />
@@ -26,34 +27,35 @@
         extend: {
           fontFamily: {
             sans: ['Inter', 'system-ui', 'sans-serif'],
-            display: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            display: ['Playfair Display', 'serif'],
           },
           colors: {
-            "primary": "#10b77f",
-            "primary-dark": "#059669",
+            "primary": "#EAB308",
+            "primary-dark": "#D4AF37",
             "background-light": "#f6f8f7",
-            "background-dark": "#10221c",
-            "obsidian": "#0f172a",
-            "surface-dark": "#162e26",
-            "surface-darker": "#11241e",
-            "border-dark": "#28453b",
-            "card-dark": "#182c25",
+            "background-dark": "#040D06",
+            "obsidian": "#040D06",
+            "surface-dark": "#0B130E",
+            "surface-darker": "#070F0A",
+            "border-dark": "rgba(255, 255, 255, 0.05)",
+            "card-dark": "#0B130E",
             "surface-glass": "rgba(255, 255, 255, 0.03)",
-            "surface-border": "rgba(255, 255, 255, 0.08)",
-            "status-safe": "#10b77f",
-            "status-warning": "#f59e0b",
-            "status-critical": "#f43f5e",
+            "surface-border": "rgba(255, 255, 255, 0.05)",
+            "status-safe": "#10B981",
+            "status-warning": "#EAB308",
+            "status-critical": "#e11d48",
             "rose-alert": "#e11d48",
-            "amber-alert": "#f59e0b",
+            "amber-alert": "#EAB308",
             "blue-alert": "#3b82f6",
-            safe: { DEFAULT: '#10b77f', light: '#bbf7d0', dark: '#166534' },
-            warning: { DEFAULT: '#f59e0b', light: '#fed7aa', dark: '#9a3412' },
-            critical: { DEFAULT: '#e11d48', light: '#fecaca', dark: '#991b1b' },
+            safe: { DEFAULT: '#10B981', light: '#bbf7d0', dark: '#064e3b' },
+            warning: { DEFAULT: '#EAB308', light: '#fef08a', dark: '#713f12' },
+            critical: { DEFAULT: '#e11d48', light: '#fecaca', dark: '#881337' },
           },
           backgroundImage: {
-            'gradient-mesh': 'radial-gradient(circle at 15% 50%, rgba(16, 183, 127, 0.08), transparent 25%), radial-gradient(circle at 85% 30%, rgba(16, 183, 127, 0.05), transparent 25%)',
-            'mesh-gradient': 'radial-gradient(circle at 50% 0%, rgba(16, 183, 127, 0.15) 0%, rgba(15, 23, 42, 0) 50%)',
-            'glow-emerald': 'radial-gradient(circle at center, rgba(16, 183, 127, 0.4) 0%, transparent 70%)',
+            'gradient-mesh': 'radial-gradient(circle at 15% 50%, rgba(234, 179, 8, 0.05), transparent 25%), radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.03), transparent 25%)',
+            'mesh-gradient': 'radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.08) 0%, rgba(4, 13, 6, 0) 50%)',
+            'glow-emerald': 'radial-gradient(circle at center, rgba(16, 185, 129, 0.2) 0%, transparent 70%)',
           },
           animation: {
             'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

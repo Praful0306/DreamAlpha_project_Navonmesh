@@ -255,11 +255,10 @@ body.light .card {
 /* 2. Custom Lag-Ring Cursor */
 .custom-cursor-dot {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 8px;
   height: 8px;
-  background-color: #f0c040;
+  background-color: #EAB308;
+  /* Gold primary */
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
@@ -268,24 +267,23 @@ body.light .card {
 
 .custom-cursor-ring {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 32px;
   height: 32px;
-  border: 2px solid rgba(240, 192, 64, 0.5);
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  /* Gold ring */
   border-radius: 50%;
   pointer-events: none;
   z-index: 9998;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s;
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
 }
 
 /* Expand ring when hovering over clickable items (handled in JS/CSS or generic class) */
 .custom-cursor-ring.hovering {
   width: 48px;
   height: 48px;
-  background-color: rgba(240, 192, 64, 0.1);
-  border-color: #f0c040;
+  background-color: rgba(234, 179, 8, 0.1);
+  border-color: rgba(234, 179, 8, 0.8);
 }
 
 /* Hide default cursor on desktop */
@@ -315,28 +313,25 @@ body.light .card {
   transform: translateY(0) scale(1);
 }
 
-/* 4. Enhanced Glassmorphism Navbar */
+/* 4. Glassmorphism Navbar Enhancement */
 .glass-nav {
-  background: rgba(11, 31, 18, 0.3);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
 .glass-nav.scrolled {
-  background: rgba(6, 15, 9, 0.85);
-  /* Darker on scroll */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  background-color: rgba(4, 13, 6, 0.7);
+  /* Deep Forest Green */
+  backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
-/* 5. Feature Card Hover Glow */
+/* 5. Feature Card Hover Glows */
 .feature-card-glow {
-  transition: all 0.4s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature-card-glow:hover {
-  box-shadow: 0 0 25px rgba(76, 175, 125, 0.15), 0 0 10px rgba(224, 168, 32, 0.1);
-  transform: translateY(-4px);
-  border-color: rgba(76, 175, 125, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px -10px rgba(234, 179, 8, 0.15), 0 0 20px 0 rgba(16, 185, 129, 0.05);
+  /* Gold / Emerald glow */
 }
