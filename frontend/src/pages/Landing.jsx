@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Landing() {
@@ -9,6 +9,92 @@ export default function Landing() {
     const [emailError, setEmailError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [contactStatus, setContactStatus] = useState('idle') // idle, loading, success
+
+    // New UI Animation States
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [isScrolled, setIsScrolled] = useState(false)
+    const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
+    const [ringPos, setRingPos] = useState({ x: 0, y: 0 })
+    const [isHovering, setIsHovering] = useState(false)
+    const requestRef = useRef()
+
+    // 1. Loader Timeout
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoaded(true), 2500)
+        return () => clearTimeout(timer)
+    }, [])
+
+    // 2. Custom Cursor Tracking (Lerp for ring lag)
+    useEffect(() => {
+        const onMouseMove = (e) => {
+            setCursorPos({ x: e.clientX, y: e.clientY })
+        }
+
+        const updateRing = () => {
+            setRingPos(prev => {
+                const dx = cursorPos.x - prev.x
+                const dy = cursorPos.y - prev.y
+                return {
+                    x: prev.x + dx * 0.15,
+                    y: prev.y + dy * 0.15
+                }
+            })
+            requestRef.current = requestAnimationFrame(updateRing)
+        }
+
+        window.addEventListener('mousemove', onMouseMove)
+        requestRef.current = requestAnimationFrame(updateRing)
+
+        // Add hover effects for clickable items
+        const handleMouseOver = (e) => {
+            const isClickable = e.target.closest('a, button, input, textarea, select, [role="button"]')
+            setIsHovering(!!isClickable)
+        }
+        window.addEventListener('mouseover', handleMouseOver)
+
+        return () => {
+            window.removeEventListener('mousemove', onMouseMove)
+            window.removeEventListener('mouseover', handleMouseOver)
+            cancelAnimationFrame(requestRef.current)
+        }
+    }, [cursorPos.x, cursorPos.y])
+
+    // 3. Scroll Navbar & Intersection Observer
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50)
+        }
+        window.addEventListener('scroll', handleScroll, { passive: true })
+
+        // Intersection Observer for scroll reveals
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible')
+                    // Optional: stop observing once revealed
+                    // observer.unobserve(entry.target)
+                }
+            })
+        }, observerOptions)
+
+        // Needs a slight delay to ensure elements exist after loader
+        if (isLoaded) {
+            document.querySelectorAll('.reveal').forEach((el) => {
+                observer.observe(el)
+            })
+        }
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll)
+            observer.disconnect()
+        }
+    }, [isLoaded])
 
     const openModal = (mode) => setAuthModal({ isOpen: true, mode })
     const closeModal = () => {
@@ -56,17 +142,40 @@ export default function Landing() {
         }, 1500)
     }
 
+    if (!isLoaded) {
+        return (
+            <div className="wheat-loader-container text-white">
+                <div className="wheat-stalk"></div>
+                <div className="loader-text mt-4">AGRISTORESMART</div>
+                <div className="w-1/4 max-w-[200px] h-1 bg-slate-800 rounded-full overflow-hidden mt-4">
+                    <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 w-full animate-[slideRight_2.5s_ease-out]"></div>
+                </div>
+                <style>{`
+                    @keyframes slideRight {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(0); }
+                    }
+                `}</style>
+            </div>
+        )
+    }
+
     return (
-        <div className="min-h-screen bg-[#0f172a] text-white flex flex-col relative overflow-hidden scroll-smooth">
+        <div className="min-h-screen bg-[#0f172a] text-white flex flex-col relative overflow-hidden scroll-smooth transition-colors duration-500">
+
+            {/* Custom Lag-Ring Cursor */}
+            <div className="custom-cursor-dot" style={{ left: `${cursorPos.x}px`, top: `${cursorPos.y}px` }} />
+            <div className={`custom-cursor-ring ${isHovering ? 'hovering' : ''}`} style={{ left: `${ringPos.x}px`, top: `${ringPos.y}px` }} />
+
             {/* Background Orbs */}
-            <div className="absolute inset-0 pointer-events-none z-0 fixed">
+            <div className="absolute inset-0 pointer-events-none z-0 fixed animate-fade-in">
                 <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px]" />
                 <div className="absolute bottom-[-10%] right-[10%] w-[600px] h-[600px] bg-sky-500/10 rounded-full blur-[140px]" />
                 <div className="absolute top-[40%] left-[-5%] w-[400px] h-[400px] bg-teal-500/5 rounded-full blur-[100px]" />
             </div>
 
             {/* Navbar */}
-            <nav className="fixed top-0 z-50 w-full px-6 py-4 flex items-center justify-between border-b border-white/5 bg-slate-900/40 backdrop-blur-md">
+            <nav className={`fixed top-0 z-50 w-full px-6 py-4 flex items-center justify-between border-b border-white/5 glass-nav ${isScrolled ? 'scrolled' : ''}`}>
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
                         <span className="material-symbols-outlined text-white text-[22px]">smart_toy</span>
@@ -124,7 +233,7 @@ export default function Landing() {
             {/* The Problem Section */}
             <section id="problem" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950/40 scroll-mt-24">
                 <div className="max-w-7xl mx-auto">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16 reveal">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-rose-500/20 text-rose-500 mb-6 border border-rose-500/30">
                             <span className="material-symbols-outlined text-3xl">warning</span>
                         </div>
@@ -134,7 +243,7 @@ export default function Landing() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 reveal">
                         {/* Challenges */}
                         <div className="bg-slate-900/60 p-8 rounded-3xl border border-slate-700/50 backdrop-blur-md shadow-xl h-full flex flex-col justify-center">
                             <h3 className="text-xl font-bold text-rose-400 mb-6 flex items-center gap-3">
@@ -196,7 +305,7 @@ export default function Landing() {
 
             {/* The Solution Section */}
             <section id="solution" className="relative z-10 py-24 px-6 bg-slate-900/60 scroll-mt-24">
-                <div className="max-w-7xl mx-auto text-center">
+                <div className="max-w-7xl mx-auto text-center reveal">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 mb-6 border border-emerald-500/30 relative">
                         <span className="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></span>
                         <span className="material-symbols-outlined text-3xl">verified</span>
@@ -213,7 +322,7 @@ export default function Landing() {
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Feature 1 */}
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 feature-card-glow reveal shadow-2xl group overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-bl-full group-hover:bg-blue-500/10 transition-colors"></div>
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 text-blue-400 flex items-center justify-center mb-6 shadow-inner border border-blue-500/20">
                                 <span className="material-symbols-outlined text-[32px]">sensors</span>
@@ -224,7 +333,7 @@ export default function Landing() {
                             </p>
                         </div>
                         {/* Feature 2 */}
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 feature-card-glow reveal shadow-2xl group overflow-hidden relative" style={{ animationDelay: '100ms' }}>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/5 rounded-bl-full group-hover:bg-orange-500/10 transition-colors"></div>
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 text-orange-400 flex items-center justify-center mb-6 shadow-inner border border-orange-500/20">
                                 <span className="material-symbols-outlined text-[32px]">model_training</span>
@@ -235,7 +344,7 @@ export default function Landing() {
                             </p>
                         </div>
                         {/* Feature 3 */}
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 feature-card-glow reveal shadow-2xl group overflow-hidden relative">
                             <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-bl-full group-hover:bg-purple-500/10 transition-colors"></div>
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 text-purple-400 flex items-center justify-center mb-6 shadow-inner border border-purple-500/20">
                                 <span className="material-symbols-outlined text-[32px]">local_shipping</span>
@@ -246,7 +355,7 @@ export default function Landing() {
                             </p>
                         </div>
                         {/* Feature 4 */}
-                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 transition-all hover:-translate-y-1 shadow-2xl group overflow-hidden relative">
+                        <div className="bg-slate-900/80 backdrop-blur-md border border-slate-700/50 rounded-3xl p-10 hover:bg-slate-800 feature-card-glow reveal shadow-2xl group overflow-hidden relative" style={{ animationDelay: '100ms' }}>
                             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-bl-full group-hover:bg-emerald-500/10 transition-colors"></div>
                             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-400 flex items-center justify-center mb-6 shadow-inner border border-emerald-500/20">
                                 <span className="material-symbols-outlined text-[32px]">verified_user</span>
@@ -263,7 +372,7 @@ export default function Landing() {
             {/* AgriTech Modernization Section */}
             <section id="technology" className="relative z-10 py-32 px-6 border-t border-white/5 bg-slate-900/40 scroll-mt-24">
                 <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none" />
-                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 reveal">
                     <div className="w-full lg:w-1/2 mb-10 lg:mb-0">
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-sm font-semibold mb-6">
                             <span className="material-symbols-outlined text-[16px] text-emerald-400">architecture</span>
@@ -353,7 +462,7 @@ export default function Landing() {
 
             {/* Redesigned Contact / Inquiry Form */}
             <section id="contact" className="relative z-10 py-24 px-6 border-t border-white/5 bg-slate-950 scroll-mt-24">
-                <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16">
+                <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-16 reveal">
                     {/* Text Column */}
                     <div className="w-full lg:w-5/12">
                         <h2 className="text-4xl md:text-5xl font-bold mb-6">Partner With Us</h2>

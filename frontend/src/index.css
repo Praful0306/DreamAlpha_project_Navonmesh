@@ -208,3 +208,135 @@ body.light .card {
   background: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
+
+/* --- Agricultural Theme Animations --- */
+
+/* 1. Wheat Stalk Loader */
+.wheat-loader-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 1.5rem;
+  background-color: #060f09;
+  /* Deep Agro Dark */
+}
+
+.wheat-stalk {
+  width: 4px;
+  height: 60px;
+  background: linear-gradient(to top, #e0a820, #f0c040);
+  border-radius: 4px;
+  transform-origin: bottom;
+  animation: growStalk 1.5s ease-out infinite alternate;
+}
+
+@keyframes growStalk {
+  0% {
+    transform: scaleY(0.2);
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+.loader-text {
+  color: #f0c040;
+  font-weight: 700;
+  letter-spacing: 2px;
+  font-family: monospace;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* 2. Custom Lag-Ring Cursor */
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #f0c040;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(240, 192, 64, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s;
+}
+
+/* Expand ring when hovering over clickable items (handled in JS/CSS or generic class) */
+.custom-cursor-ring.hovering {
+  width: 48px;
+  height: 48px;
+  background-color: rgba(240, 192, 64, 0.1);
+  border-color: #f0c040;
+}
+
+/* Hide default cursor on desktop */
+@media (pointer: fine) {
+  body {
+    cursor: none;
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    cursor: none;
+  }
+}
+
+/* 3. Scroll Reveal Class */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 4. Enhanced Glassmorphism Navbar */
+.glass-nav {
+  background: rgba(11, 31, 18, 0.3);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.glass-nav.scrolled {
+  background: rgba(6, 15, 9, 0.85);
+  /* Darker on scroll */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* 5. Feature Card Hover Glow */
+.feature-card-glow {
+  transition: all 0.4s ease;
+}
+
+.feature-card-glow:hover {
+  box-shadow: 0 0 25px rgba(76, 175, 125, 0.15), 0 0 10px rgba(224, 168, 32, 0.1);
+  transform: translateY(-4px);
+  border-color: rgba(76, 175, 125, 0.4);
+}
